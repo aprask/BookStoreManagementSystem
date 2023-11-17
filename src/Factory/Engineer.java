@@ -1,4 +1,59 @@
 package Factory;
 
-public class ItemConstruction {
+import java.util.ArrayList;
+
+public class Engineer
+{
+    private CDBuilder cdBuilder;
+    private BookBuilder bookBuilder;
+    private DVDBuilder dvdBuilder;
+    private ArrayList<Item> catalog = new ArrayList<>();
+    public Engineer(int itemType)
+    {
+        if(itemType == 1)
+        {
+            cdBuilder = new CDBuilder();
+        }
+        else if(itemType == 2)
+        {
+            bookBuilder = new BookBuilder();
+            catalog.add(bookBuilder.buildBook());
+        }
+        else if(itemType == 3)
+        {
+            dvdBuilder = new DVDBuilder();
+        }
+    }
+
+    public CDBuilder getCdBuilder() {
+        return cdBuilder;
+    }
+
+    public void setCdBuilder(CDBuilder cdBuilder) {
+        this.cdBuilder = cdBuilder;
+    }
+
+    public DVDBuilder getDvdBuilder() {
+        return dvdBuilder;
+    }
+
+    public void setDvdBuilder(DVDBuilder dvdBuilder) {
+        this.dvdBuilder = dvdBuilder;
+    }
+
+    public BookBuilder getBookBuilder() {
+        return bookBuilder;
+    }
+
+    public void setBookBuilder(BookBuilder bookBuilder) {
+        this.bookBuilder = bookBuilder;
+    }
+
+    public ArrayList<Item> getCatalog() {
+        return catalog;
+    }
+
+    public void setCatalog(ArrayList<Item> catalog) {
+        this.catalog = catalog;
+    }
 }

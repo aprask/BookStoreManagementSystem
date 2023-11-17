@@ -1,4 +1,4 @@
-package Administrator;
+package Administrator.Security;
 import java.util.Scanner;
 
 public class Admin implements Operator {
