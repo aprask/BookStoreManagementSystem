@@ -36,11 +36,19 @@ public class Crate
         {
             System.out.println("***********************************************************************");
             System.out.println("Name: " + this.buildHistory.get(i).getCatalog().get(i).getItemName());
-            System.out.println("Item ID: " + this.buildHistory.get(i).getCatalog().get(i).getID());
+            System.out.println("Item ID: " + i);
             System.out.println("Item Price: $" + this.buildHistory.get(i).getCatalog().get(i).getItemPrice());
-            if (this.buildHistory.get(i).getCatalog().get(i) instanceof CD) {
-                // TODO Fix this
-                System.out.println("Item Size: " + (this.buildHistory.get(i).getCatalog().get(i)).getSize());
+            if(this.buildHistory.get(i).getCatalog().get(i).getClass().equals(Book.class))
+            {
+                System.out.println("Page Count: " + this.buildHistory.get(i).getCatalog().get(i).getSize());
+            }
+            else if(this.buildHistory.get(i).getCatalog().get(i).getClass().equals(CD.class))
+            {
+                System.out.println("CD Length (in seconds): " + this.buildHistory.get(i).getCatalog().get(i).getSize());
+            }
+            else if(this.buildHistory.get(i).getCatalog().get(i).getClass().equals(DVD.class))
+            {
+                System.out.println("DVD Length (in seconds): " + this.buildHistory.get(i).getCatalog().get(i).getSize());
             }
             System.out.println("***********************************************************************");
         }

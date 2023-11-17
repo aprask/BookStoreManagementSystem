@@ -4,7 +4,6 @@ public abstract class Item implements ItemPlan, Comparable
 {
     private String name;
     private double price;
-    private int ID = 0;
     private boolean status;
     private String type;
     private int size;
@@ -19,7 +18,6 @@ public abstract class Item implements ItemPlan, Comparable
         this.type = type;
         this.size = size;
         this.status = false;
-        this.ID++;
     }
     @Override
     public void setItemType(String itemType) {
@@ -40,11 +38,6 @@ public abstract class Item implements ItemPlan, Comparable
         status = false;
     }
     @Override
-    public void setItemID()
-    {
-        ID++;
-    }
-    @Override
     public void setItemSize(int size)
     {
         this.size = size;
@@ -53,10 +46,6 @@ public abstract class Item implements ItemPlan, Comparable
     public int getSize() {
         return this.size;
     }
-    public int getID() {
-        return this.ID;
-    }
-
     public String getItemType()
     {
         return this.type;

@@ -33,23 +33,17 @@ public class DVDBuilder implements ItemBuilder {
     }
 
     @Override
-    public void buildItemID() {
-        this.dvd.setItemID();
-    }
-
-    @Override
     public void buildItemSize() {
         System.out.println("How many seconds in the DVD? ");
         this.dvd.setItemSize(this.scanner.nextInt());
     }
-    public Book buildDVD()
+    public DVD buildDVD()
     {
         buildItemName();
         buildItemPrice();
         buildItemType();
         buildItemSize();
-        buildItemID();
-        return new Book(this.dvd.getItemName(), this.dvd.getItemPrice(), this.dvd.getItemType(), this.dvd.getSize());
+        return new DVD(this.dvd.getItemName(), this.dvd.getItemPrice(), this.dvd.getItemType(), this.dvd.getSize());
     }
     public Scanner getScanner() {
         return scanner;

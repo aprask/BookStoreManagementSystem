@@ -33,11 +33,6 @@ public class BookBuilder implements ItemBuilder
     }
 
     @Override
-    public void buildItemID() {
-        this.book.setItemID();
-    }
-
-    @Override
     public void buildItemSize() {
         System.out.println("How many pages? ");
         this.book.setItemSize(this.scanner.nextInt());
@@ -48,7 +43,6 @@ public class BookBuilder implements ItemBuilder
         buildItemPrice();
         buildItemType();
         buildItemSize();
-        buildItemID();
         return new Book(this.book.getItemName(), this.book.getItemPrice(), this.book.getItemType(), this.book.getSize());
     }
     public Book getBook() {

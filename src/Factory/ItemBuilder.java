@@ -6,6 +6,5 @@ public interface ItemBuilder
     public void buildItemName();
     public void buildItemPrice();
     public void buildItemStatus();
-    public void buildItemID();
     public void buildItemSize();
 }
