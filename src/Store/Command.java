@@ -11,5 +11,4 @@ public interface Command
     public void compareTwoItemsCommand();
     public void removeItemCommand();
     public void restockItemCommand();
-    public boolean unlockStore(Admin admin);
 }

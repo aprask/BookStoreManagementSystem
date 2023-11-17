@@ -12,7 +12,7 @@ public class Registrar
     {
         customerLog.add(customer);
     }
-    public String runIntegralInfo(int ID)
+    public String customerDetails(int ID)
     {
         return "Name: " + customerLog.get(ID).getName() +
                 "\nBalance: " + customerLog.get(ID).getBalance();
