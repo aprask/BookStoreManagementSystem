@@ -53,6 +53,9 @@ public abstract class Item implements ItemPlan, Comparable
     public int getSize() {
         return this.size;
     }
+    public int getID() {
+        return this.ID;
+    }
 
     public String getItemType()
     {

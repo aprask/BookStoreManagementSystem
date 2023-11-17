@@ -37,6 +37,15 @@ public class CDBuilder implements ItemBuilder {
         System.out.println("How many seconds in the CD? ");
         this.cd.setItemSize(this.scanner.nextInt());
     }
+    public Book buildCD()
+    {
+        buildItemName();
+        buildItemPrice();
+        buildItemType();
+        buildItemSize();
+        buildItemID();
+        return new Book(this.cd.getItemName(), this.cd.getItemPrice(), this.cd.getItemType(), this.cd.getSize());
+    }
     public CD getCd() {
         return cd;
     }

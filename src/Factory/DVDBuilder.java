@@ -42,7 +42,15 @@ public class DVDBuilder implements ItemBuilder {
         System.out.println("How many seconds in the DVD? ");
         this.dvd.setItemSize(this.scanner.nextInt());
     }
-
+    public Book buildDVD()
+    {
+        buildItemName();
+        buildItemPrice();
+        buildItemType();
+        buildItemSize();
+        buildItemID();
+        return new Book(this.dvd.getItemName(), this.dvd.getItemPrice(), this.dvd.getItemType(), this.dvd.getSize());
+    }
     public Scanner getScanner() {
         return scanner;
     }

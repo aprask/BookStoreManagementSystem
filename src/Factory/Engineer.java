@@ -7,12 +7,13 @@ public class Engineer
     private CDBuilder cdBuilder;
     private BookBuilder bookBuilder;
     private DVDBuilder dvdBuilder;
-    private ArrayList<Item> catalog = new ArrayList<>();
+    private static ArrayList<Item> catalog = new ArrayList<>();
     public Engineer(int itemType)
     {
         if(itemType == 1)
         {
             cdBuilder = new CDBuilder();
+            catalog.add(cdBuilder.buildCD());
         }
         else if(itemType == 2)
         {
@@ -22,9 +23,9 @@ public class Engineer
         else if(itemType == 3)
         {
             dvdBuilder = new DVDBuilder();
+            catalog.add(dvdBuilder.buildDVD());
         }
     }
-
     public CDBuilder getCdBuilder() {
         return cdBuilder;
     }
@@ -54,6 +55,6 @@ public class Engineer
     }
 
     public void setCatalog(ArrayList<Item> catalog) {
-        this.catalog = catalog;
+        Engineer.catalog = catalog;
     }
 }
