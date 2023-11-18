@@ -3,13 +3,15 @@ package Store;
 import Administrator.Security.Admin;
 import Bank.Vault;
 import Factory.Crate;
+
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class BookStore implements BookStoreSpecification, Command {
     private static final Crate crate = new Crate();
     private final Admin admin = new Admin();
     private Scanner scanner = new Scanner(System.in);
-    private Vault vault; // TODO add bank features
+    private ArrayList<Float> customerWallets = new ArrayList<>();
     private Cart cart;
     public BookStore()
     {
@@ -27,6 +29,7 @@ public class BookStore implements BookStoreSpecification, Command {
                 crate.addToBuildHistory(itemType);
             }
         }
+        this.makePurchaseCommand();
     }
 
     public Cart getCart() {
@@ -58,6 +61,7 @@ public class BookStore implements BookStoreSpecification, Command {
     }
     @Override
     public void makePurchaseCommand() {
+        renderBankFunctionality();
         while(true)
         {
             getMenuCommand();
@@ -141,6 +145,70 @@ public class BookStore implements BookStoreSpecification, Command {
     public void removeItemCommand(int itemID) {
         cart.removeItemFromCart(itemID);
     }
+
+    @Override
+    public boolean renderBankFunctionality() {
+        Vault newVault = new Vault();
+        System.out.println("You need to withdraw money from our ATM before you make any purchases... ");
+        System.out.println("You will need to enter your 4-digit pin number...");
+        System.out.println("Awaiting Service...");
+        System.out.println("WELCOME");
+        bankCommands();
+        int bankProcedure = scanner.nextInt();
+        while(true)
+        {
+            if(bankProcedure != 1)
+            {
+                System.out.println("YOU NEED TO INSERT A CARD BEFORE YOU DO ANYTHING ELSE!");
+            }
+            else {
+                newVault.noCard().insertCard();
+                bankCommands();
+                bankProcedure = scanner.nextInt();
+                if(bankProcedure == 3)
+                {
+                    System.out.println("Type in 4-digit pin: ");
+                    String attemptedPin = scanner.next();
+                    if(attemptedPin.length() != 4)
+                    {
+                        System.out.println("ERROR ");
+                        newVault.hasCard().insertPin(attemptedPin);
+                        break;
+                    }
+                    else
+                    {
+                        newVault.hasCard().insertPin(attemptedPin);
+                        System.out.println("How much would you like to withdraw? ");
+                        int withdrawnMoney = scanner.nextInt();
+                        if(withdrawnMoney <= newVault.getCashStoredInVault())
+                        {
+                            customerWallets.add((float) withdrawnMoney);
+                            newVault.hasCorrectPin().withdraw(withdrawnMoney);
+                            System.out.println("$" + withdrawnMoney + " added to your wallet.\n");
+                            break;
+                        }
+                        else
+                        {
+                            System.out.println("Error");
+                            newVault.hasCorrectPin().withdraw(withdrawnMoney);
+                        }
+
+                    }
+                }
+                else if(bankProcedure == 2)
+                {
+                    System.out.println("Ejection Procedure Initiated...");
+                    newVault.hasCard().ejectCard();
+                    break;
+                }
+            }
+        }
+        return false;
+    }
+    public void bankCommands()
+    {
+        System.out.println("1 == Insert Card\n2 == Eject Card\n3 == Enter Pin\n4 == Check Vault's Balance: \n");
+    }
     public boolean unlockStore() {
         return admin.didPass();
     }
@@ -151,5 +219,13 @@ public class BookStore implements BookStoreSpecification, Command {
 
     public void setScanner(Scanner scanner) {
         this.scanner = scanner;
+    }
+
+    public ArrayList<Float> getCustomerWallets() {
+        return customerWallets;
+    }
+
+    public void setCustomerWallets(ArrayList<Float> customerWallets) {
+        this.customerWallets = customerWallets;
     }
 }

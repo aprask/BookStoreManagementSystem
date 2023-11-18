@@ -1,6 +1,7 @@
 package Store;
 
 import Administrator.Security.Admin;
+import Bank.Vault;
 
 public interface Command
 {
@@ -10,4 +11,5 @@ public interface Command
     public void refundOrderCommand(Cart cart);
     public void compareTwoItemsCommand();
     public void removeItemCommand(int itemID);
+    public boolean renderBankFunctionality();
 }

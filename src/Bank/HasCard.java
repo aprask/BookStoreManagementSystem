@@ -38,6 +38,6 @@ public class HasCard implements BankState{
 
     @Override
     public void withdraw(int withdrawAmount) {
-        System.out.println("Insert correct pin to withdraw cash: ");
+        System.out.println("TYPE IN PIN FIRST ");
     }
 }
