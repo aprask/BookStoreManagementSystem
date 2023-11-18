@@ -4,8 +4,8 @@ public class Vault {
     private BankState hasCard;
     private BankState noCard;
     private BankState correctPin;
-    private  BankState noVaultMoney;
-    private  BankState vaultState;
+    private BankState noVaultMoney;
+    private BankState vaultState;
     private int cashStoredInVault = 1000000000;
     private boolean isCorrectPin = false;
     public Vault()
@@ -34,28 +34,6 @@ public class Vault {
         return cashStoredInVault;
     }
 
-    public void setCashStoredInVault(int cashStoredInVault) {
-        this.cashStoredInVault = cashStoredInVault;
-    }
-    public void insertCard()
-    {
-        vaultState.insertCard();
-    }
-    public void ejectCard()
-    {
-        vaultState.ejectCard();
-    }
-    public void withdraw(int cashToWithdraw) {
-        vaultState.withdraw(cashToWithdraw);
-    }
-    public void insertPin(String pin)
-    {
-        vaultState.insertPin(pin);
-    }
-
-    public boolean isCorrectPin() {
-        return isCorrectPin;
-    }
     public BankState hasCard()
     {
         return hasCard;

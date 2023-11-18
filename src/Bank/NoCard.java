@@ -1,6 +1,6 @@
 package Bank;
 
-public class NoCard implements BankState{
+public class NoCard implements BankState {
     Vault vault;
     public NoCard(Vault newVault)
     {

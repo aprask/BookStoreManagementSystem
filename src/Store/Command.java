@@ -6,9 +6,8 @@ public interface Command
 {
     public void getMenuCommand();
     public void makePurchaseCommand();
-    public void completeOrderCommand();
-    public void refundOrderCommand();
+    public void completeOrderCommand(Cart cart);
+    public void refundOrderCommand(Cart cart);
     public void compareTwoItemsCommand();
-    public void removeItemCommand();
-    public void restockItemCommand();
+    public void removeItemCommand(int itemID);
 }

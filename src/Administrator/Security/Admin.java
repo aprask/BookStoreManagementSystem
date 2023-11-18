@@ -2,7 +2,7 @@ package Administrator.Security;
 import java.util.Scanner;
 
 public class Admin implements Operator {
-    private static final String ADMIN_PASSWORD = "project2";
+    private static final String ADMIN_PASSWORD = "project3";
     private final Scanner scanner;
 
     public Admin() {
