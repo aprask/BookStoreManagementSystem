@@ -12,4 +12,5 @@ public interface Command
     public void compareTwoItemsCommand();
     public void removeItemCommand(int itemID);
     public boolean renderBankFunctionality();
+    public void catalogCustomers();
 }

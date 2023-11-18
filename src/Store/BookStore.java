@@ -1,5 +1,7 @@
 package Store;
 
+import Administrator.Manager;
+import Administrator.Salesman;
 import Administrator.Security.Admin;
 import Bank.Vault;
 import Factory.Crate;
@@ -12,7 +14,9 @@ public class BookStore implements BookStoreSpecification, Command {
     private final Admin admin = new Admin();
     private Scanner scanner = new Scanner(System.in);
     private ArrayList<Float> customerWallets = new ArrayList<>();
-    private Cart cart;
+    private static Cart cart;
+    private static final Manager theManager = new Manager();
+    private static boolean proceedToPurchase = false;
     public BookStore()
     {
         if(unlockStore())
@@ -28,16 +32,20 @@ public class BookStore implements BookStoreSpecification, Command {
                 }
                 crate.addToBuildHistory(itemType);
             }
+            this.catalogCustomers();
+            if(proceedToPurchase) this.makePurchaseCommand();
         }
-        this.makePurchaseCommand();
+
     }
 
+    public static void setProceedToPurchase(boolean proceedToPurchase) {
+        BookStore.proceedToPurchase = proceedToPurchase;
+    }
     public Cart getCart() {
-        return this.cart;
+        return BookStore.cart;
     }
-
     public void setCart(Cart cart) {
-        this.cart = cart;
+        BookStore.cart = cart;
     }
 
     /**
@@ -205,6 +213,13 @@ public class BookStore implements BookStoreSpecification, Command {
         }
         return false;
     }
+
+    @Override
+    public void catalogCustomers() {
+        theManager.catalogCustomers();
+        proceedToPurchase = true;
+    }
+
     public void bankCommands()
     {
         System.out.println("1 == Insert Card\n2 == Eject Card\n3 == Enter Pin\n4 == Check Vault's Balance: \n");
