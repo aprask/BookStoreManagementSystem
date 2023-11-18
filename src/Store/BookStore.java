@@ -9,7 +9,7 @@ public class BookStore implements BookStoreSpecification, Command {
     private static final Crate crate = new Crate();
     private final Admin admin = new Admin();
     private Scanner scanner = new Scanner(System.in);
-    private Vault vault;
+    private Vault vault; // TODO add bank features
     private Cart cart;
     public BookStore()
     {
@@ -27,8 +27,6 @@ public class BookStore implements BookStoreSpecification, Command {
                 crate.addToBuildHistory(itemType);
             }
         }
-        System.out.println("\nHere are the available items: \n");
-        crate.openCrate();
     }
 
     public Cart getCart() {
@@ -125,6 +123,7 @@ public class BookStore implements BookStoreSpecification, Command {
                 int itemByID = scanner.nextInt();
                 if(itemByID == -1 || cart.getOrderHistory().size() == 0)
                 {
+                    completeOrderCommand(cart);
                     break;
                 }
                 removeItemCommand(itemByID);
