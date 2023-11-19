@@ -26,7 +26,7 @@ public class CDBuilder implements ItemBuilder {
     }
     @Override
     public void buildItemStatus() {
-        this.cd.setItemStatus();
+        this.cd.setItemStatus(false);
     }
     @Override
     public void buildItemSize() {

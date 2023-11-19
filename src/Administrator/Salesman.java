@@ -26,11 +26,6 @@ public class Salesman implements Pitch {
         return scanner.nextInt();
     }
     @Override
-    public double askForBalance() {
-        System.out.println("Bank balance? ");
-        return scanner.nextDouble();
-    }
-    @Override
     public String askForPaymentType() {
         System.out.println("Payment type? ");
         return scanner.next();

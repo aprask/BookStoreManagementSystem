@@ -3,13 +3,11 @@ package Administrator;
 public abstract class Person {
     private String name;
     private int age;
-    private double balance;
     private String paymentType;
-    public Person(String name, int age, double balance, String paymentType)
+    public Person(String name, int age, String paymentType)
     {
         this.name = name;
         this.age = age;
-        this.balance = balance;
         this.paymentType = paymentType;
     }
 
@@ -27,14 +25,6 @@ public abstract class Person {
 
     public void setAge(int age) {
         this.age = age;
-    }
-
-    public double getBalance() {
-        return balance;
-    }
-
-    public void setBalance(double balance) {
-        this.balance = balance;
     }
 
     public String getPaymentType() {

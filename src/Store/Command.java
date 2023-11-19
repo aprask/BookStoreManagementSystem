@@ -1,7 +1,6 @@
 package Store;
 
-import Administrator.Security.Admin;
-import Bank.Vault;
+import Factory.Item;
 
 public interface Command
 {
@@ -13,4 +12,5 @@ public interface Command
     public void removeItemCommand(int itemID);
     public boolean renderBankFunctionality();
     public void catalogCustomers();
+    public void bagItem(Item item);
 }

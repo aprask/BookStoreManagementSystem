@@ -5,8 +5,8 @@ public class Customer extends Person
     private boolean premium;
     private int ID = 0;
 
-    public Customer(String name, int age, double balance, String paymentType, boolean premium) {
-        super(name, age, balance, paymentType);
+    public Customer(String name, int age, String paymentType, boolean premium) {
+        super(name, age, paymentType);
         this.premium = premium;
         ID++;
     }

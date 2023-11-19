@@ -29,7 +29,7 @@ public class DVDBuilder implements ItemBuilder {
 
     @Override
     public void buildItemStatus() {
-        this.dvd.setItemStatus();
+        this.dvd.setItemStatus(false);
     }
 
     @Override

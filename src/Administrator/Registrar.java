@@ -14,7 +14,6 @@ public class Registrar
     }
     public String customerDetails(int ID)
     {
-        return "Name: " + customerLog.get(ID).getName() +
-                "\nBalance: " + customerLog.get(ID).getBalance();
+        return customerLog.get(ID).getName();
     }
 }

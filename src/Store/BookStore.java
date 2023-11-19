@@ -1,10 +1,10 @@
 package Store;
 
 import Administrator.Manager;
-import Administrator.Salesman;
 import Administrator.Security.Admin;
 import Bank.Vault;
 import Factory.Crate;
+import Factory.Item;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -69,39 +69,60 @@ public class BookStore implements BookStoreSpecification, Command {
     }
     @Override
     public void makePurchaseCommand() {
-        renderBankFunctionality();
-        while(true)
+        int customerCount = theManager.getLineCount();
+        int customerID = 0;
+        while(customerCount > 0)
         {
-            getMenuCommand();
-            System.out.println("\nType \"1\" to purchase a CD");
-            System.out.println("Type \"2\" to purchase a Book");
-            System.out.println("Type \"3\" to purchase a DVD");
-            System.out.println("Type \"4\" to display the total inventory value");
-            System.out.println("Type \"5\" to compare two items");
-            System.out.println("Type \"-1\" to exit/finalize order");
-            int purchaseOption = scanner.nextInt();
-            if(purchaseOption == 1 || purchaseOption == 2 || purchaseOption == 3)
+            System.out.println("Hello, " + theManager.registrar.customerDetails(customerID));
+            renderBankFunctionality();
+            while(true)
             {
-                crate.openCrate(purchaseOption);
-                System.out.println("Purchase the desired item by its associated ID: ");
-                int desiredItem = scanner.nextInt();
-                cart = new Cart(crate.retrieveSpecifiedItem(desiredItem));
-            }
-            else if(purchaseOption == 4)
-            {
-                System.out.println("Cost of the inventory $" + inventoryValue());
-            }
-            else if(purchaseOption == 5)
-            {
-                compareTwoItemsCommand();
-            }
-            else if(purchaseOption == -1)
-            {
-                completeOrderCommand(cart);
-                break;
-            }
+                getMenuCommand();
+                System.out.println("\nType \"1\" to purchase a CD");
+                System.out.println("Type \"2\" to purchase a Book");
+                System.out.println("Type \"3\" to purchase a DVD");
+                System.out.println("Type \"4\" to display the total inventory value");
+                System.out.println("Type \"5\" to compare two items");
+                System.out.println("Type \"-1\" to exit/finalize order");
+                System.out.println("Wallet: $" + getCustomerWallets().get(customerID));
+                int purchaseOption = scanner.nextInt();
+                if(purchaseOption == 1 || purchaseOption == 2 || purchaseOption == 3)
+                {
+                    crate.openCrate(purchaseOption);
+                    System.out.println("Wallet: $" + getCustomerWallets().get(customerID));
+                    System.out.println("Purchase the desired item by its associated ID: ");
+                    int desiredItem = scanner.nextInt();
+                    if(!(crate.retrieveSpecifiedItem(desiredItem).getItemPrice() > getCustomerWallets().get(customerID)))
+                    {
+                        getCustomerWallets().set(customerID, (float) (getCustomerWallets().get(customerID)-crate.retrieveSpecifiedItem(desiredItem).getItemPrice()));
+                        cart = new Cart(crate.retrieveSpecifiedItem(desiredItem));
+                        bagItem(crate.retrieveSpecifiedItem(desiredItem));
+                    }
+                    else
+                    {
+                        System.out.println("Insufficient Funds...");
+                        break;
+                    }
+                }
+                else if(purchaseOption == 4)
+                {
+                    System.out.println("Cost of the inventory $" + inventoryValue());
+                }
+                else if(purchaseOption == 5)
+                {
+                    compareTwoItemsCommand();
+                }
+                else if(purchaseOption == -1)
+                {
+                    completeOrderCommand(cart);
+                    break;
+                }
 
+            }
+            customerID++;
+            customerCount--;
         }
+
     }
     @Override
     public void completeOrderCommand(Cart cart) {
@@ -111,6 +132,7 @@ public class BookStore implements BookStoreSpecification, Command {
         if(completeOrRefund.equalsIgnoreCase("y"))
         {
             System.out.println("Your total is: $" + cart.cartTotal());
+            cart.clearCart();
         }
         else if(completeOrRefund.equalsIgnoreCase("n"))
         {
@@ -218,6 +240,11 @@ public class BookStore implements BookStoreSpecification, Command {
     public void catalogCustomers() {
         theManager.catalogCustomers();
         proceedToPurchase = true;
+    }
+
+    @Override
+    public void bagItem(Item item) {
+        item.setItemStatus(true); // TODO fix (we need to bag the items/make the disappear after they are purchased)
     }
 
     public void bankCommands()

@@ -29,7 +29,7 @@ public class BookBuilder implements ItemBuilder
 
     @Override
     public void buildItemStatus() {
-        this.book.setItemStatus();
+        this.book.setItemStatus(false);
     }
 
     @Override

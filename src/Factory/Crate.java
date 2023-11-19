@@ -38,15 +38,15 @@ public class Crate
             System.out.println("Name: " + this.buildHistory.get(i).getCatalog().get(i).getItemName());
             System.out.println("Item ID: " + i);
             System.out.println("Item Price: $" + this.buildHistory.get(i).getCatalog().get(i).getItemPrice());
-            if(this.buildHistory.get(i).getCatalog().get(i).getClass().equals(Book.class))
+            if(this.buildHistory.get(i).getCatalog().get(i).getClass().equals(Book.class) && !this.buildHistory.get(i).getCatalog().get(i).isStatus())
             {
                 System.out.println("Page Count: " + this.buildHistory.get(i).getCatalog().get(i).getSize());
             }
-            else if(this.buildHistory.get(i).getCatalog().get(i).getClass().equals(CD.class))
+            else if(this.buildHistory.get(i).getCatalog().get(i).getClass().equals(CD.class) && !this.buildHistory.get(i).getCatalog().get(i).isStatus())
             {
                 System.out.println("CD Length (in seconds): " + this.buildHistory.get(i).getCatalog().get(i).getSize());
             }
-            else if(this.buildHistory.get(i).getCatalog().get(i).getClass().equals(DVD.class))
+            else if(this.buildHistory.get(i).getCatalog().get(i).getClass().equals(DVD.class) && !this.buildHistory.get(i).getCatalog().get(i).isStatus())
             {
                 System.out.println("DVD Length (in seconds): " + this.buildHistory.get(i).getCatalog().get(i).getSize());
             }
@@ -57,7 +57,7 @@ public class Crate
         for (int i = 0; i < buildHistory.size(); i++) {
             if (itemType == 1) {
                 System.out.println("CDs: \n");
-                if (this.buildHistory.get(i).getCatalog().get(i).getClass().equals(CD.class)) {
+                if (this.buildHistory.get(i).getCatalog().get(i).getClass().equals(CD.class) && !this.buildHistory.get(i).getCatalog().get(i).isStatus()) {
                     System.out.println("***********************************************************************");
                     System.out.println("Name: " + this.buildHistory.get(i).getCatalog().get(i).getItemName());
                     System.out.println("Item ID: " + i);
@@ -67,7 +67,7 @@ public class Crate
                 }
             } else if (itemType == 2) {
                 System.out.println("Books: \n");
-                if (this.buildHistory.get(i).getCatalog().get(i).getClass().equals(Book.class)) {
+                if (this.buildHistory.get(i).getCatalog().get(i).getClass().equals(Book.class) && !this.buildHistory.get(i).getCatalog().get(i).isStatus()) {
                     System.out.println("***********************************************************************");
                     System.out.println("Name: " + this.buildHistory.get(i).getCatalog().get(i).getItemName());
                     System.out.println("Item ID: " + i);
@@ -78,7 +78,7 @@ public class Crate
                 }
             } else if (itemType == 3) {
                 System.out.println("DVDs: \n");
-                if (this.buildHistory.get(i).getCatalog().get(i).getClass().equals(DVD.class)) {
+                if (this.buildHistory.get(i).getCatalog().get(i).getClass().equals(DVD.class) && !this.buildHistory.get(i).getCatalog().get(i).isStatus()) {
                     System.out.println("***********************************************************************");
                     System.out.println("Name: " + this.buildHistory.get(i).getCatalog().get(i).getItemName());
                     System.out.println("Item ID: " + i);

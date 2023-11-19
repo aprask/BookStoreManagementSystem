@@ -4,7 +4,7 @@ public abstract class Item implements ItemPlan, Comparable
 {
     private String name;
     private double price;
-    private boolean status;
+    private boolean itemStatus;
     private String type;
     private int size;
     public Item()
@@ -17,7 +17,7 @@ public abstract class Item implements ItemPlan, Comparable
         this.price = price;
         this.type = type;
         this.size = size;
-        this.status = false;
+        this.itemStatus = false;
     }
     @Override
     public void setItemType(String itemType) {
@@ -33,9 +33,9 @@ public abstract class Item implements ItemPlan, Comparable
         price = itemPrice;
     }
     @Override
-    public void setItemStatus()
+    public void setItemStatus(boolean status)
     {
-        status = false;
+        itemStatus = status;
     }
     @Override
     public void setItemSize(int size)
@@ -71,5 +71,8 @@ public abstract class Item implements ItemPlan, Comparable
             }
         }
         return 0;
+    }
+    public boolean isStatus() {
+        return itemStatus;
     }
 }
