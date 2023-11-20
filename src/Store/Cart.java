@@ -34,6 +34,7 @@ public class Cart
             System.out.println("****************************************");
             System.out.println("Name: " + value.getItem().getItemName());
             System.out.println("Price: $" + value.getItem().getItemPrice());
+            System.out.println("ID: " + value);
             System.out.println("****************************************");
         }
     }

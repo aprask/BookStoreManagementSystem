@@ -1,6 +1,7 @@
 package Store;
 
 import Administrator.Manager;
+import Administrator.Registrar;
 import Administrator.Security.Admin;
 import Bank.Vault;
 import Factory.Crate;
@@ -73,17 +74,16 @@ public class BookStore implements BookStoreSpecification, Command {
         int customerID = 0;
         while(customerCount > 0)
         {
-            System.out.println("Hello, " + theManager.registrar.customerDetails(customerID));
+            System.out.println(theManager.registrar.customerDetails(customerID));
+            if(Registrar.customerLog.get(customerID).isPremium() && Registrar.customerLog.get(customerID) != null)
+            {
+                theManager.membershipDueDate();
+            }
             renderBankFunctionality();
             while(true)
             {
                 getMenuCommand();
-                System.out.println("\nType \"1\" to purchase a CD");
-                System.out.println("Type \"2\" to purchase a Book");
-                System.out.println("Type \"3\" to purchase a DVD");
-                System.out.println("Type \"4\" to display the total inventory value");
-                System.out.println("Type \"5\" to compare two items");
-                System.out.println("Type \"-1\" to exit/finalize order");
+                itemMenu();
                 System.out.println("Wallet: $" + getCustomerWallets().get(customerID));
                 int purchaseOption = scanner.nextInt();
                 if(purchaseOption == 1 || purchaseOption == 2 || purchaseOption == 3)
@@ -183,58 +183,66 @@ public class BookStore implements BookStoreSpecification, Command {
         System.out.println("You will need to enter your 4-digit pin number...");
         System.out.println("Awaiting Service...");
         System.out.println("WELCOME");
-        bankCommands();
+        bankCommands(1);
         int bankProcedure = scanner.nextInt();
         while(true)
         {
             if(bankProcedure != 1)
             {
                 System.out.println("YOU NEED TO INSERT A CARD BEFORE YOU DO ANYTHING ELSE!");
+                bankCommands(1);
+                bankProcedure = scanner.nextInt();
             }
             else {
                 newVault.noCard().insertCard();
-                bankCommands();
-                bankProcedure = scanner.nextInt();
-                if(bankProcedure == 3)
-                {
-                    System.out.println("Type in 4-digit pin: ");
-                    String attemptedPin = scanner.next();
-                    if(attemptedPin.length() != 4)
+                do {
+                    bankCommands(3);
+                    bankProcedure = scanner.nextInt();
+                    if(bankProcedure == 3)
                     {
-                        System.out.println("ERROR ");
-                        newVault.hasCard().insertPin(attemptedPin);
-                        break;
-                    }
-                    else
-                    {
-                        newVault.hasCard().insertPin(attemptedPin);
-                        System.out.println("How much would you like to withdraw? ");
-                        int withdrawnMoney = scanner.nextInt();
-                        if(withdrawnMoney <= newVault.getCashStoredInVault())
+                        System.out.println("Type in 4-digit pin: ");
+                        String attemptedPin = scanner.next();
+                        if(attemptedPin.length() != 4)
                         {
-                            customerWallets.add((float) withdrawnMoney);
-                            newVault.hasCorrectPin().withdraw(withdrawnMoney);
-                            System.out.println("$" + withdrawnMoney + " added to your wallet.\n");
+                            System.out.println("ERROR ");
+                            newVault.hasCard().insertPin(attemptedPin);
                             break;
                         }
                         else
                         {
-                            System.out.println("Error");
-                            newVault.hasCorrectPin().withdraw(withdrawnMoney);
-                        }
+                            newVault.hasCard().insertPin(attemptedPin);
+                            System.out.println("How much would you like to withdraw? ");
+                            int withdrawnMoney = scanner.nextInt();
+                            if(withdrawnMoney <= newVault.getCashStoredInVault())
+                            {
+                                customerWallets.add((float) withdrawnMoney);
+                                newVault.hasCorrectPin().withdraw(withdrawnMoney);
+                                System.out.println("$" + withdrawnMoney + " added to your wallet.\n");
+                                return true;
+                            }
+                            else
+                            {
+                                System.out.println("Error");
+                                newVault.hasCorrectPin().withdraw(withdrawnMoney);
+                            }
 
+                        }
                     }
-                }
-                else if(bankProcedure == 2)
-                {
-                    System.out.println("Ejection Procedure Initiated...");
-                    newVault.hasCard().ejectCard();
-                    break;
-                }
+                    if(bankProcedure == 2)
+                    {
+                        newVault.hasCard().ejectCard();
+                        break;
+                    }
+                    if(bankProcedure == 4)
+                    {
+                        System.out.println("Cash in Vault: " + newVault.getCashStoredInVault());
+                    }
+                } while (true);
+
             }
         }
-        return false;
     }
+
 
     @Override
     public void catalogCustomers() {
@@ -247,9 +255,32 @@ public class BookStore implements BookStoreSpecification, Command {
         item.setItemStatus(true); // TODO fix (we need to bag the items/make the disappear after they are purchased)
     }
 
-    public void bankCommands()
+    public void bankCommands(int locationID)
     {
-        System.out.println("1 == Insert Card\n2 == Eject Card\n3 == Enter Pin\n4 == Check Vault's Balance: \n");
+        switch (locationID) {
+            case 1 -> System.out.println("Insert Card (Type \"1\")");
+            case 2 -> System.out.println("Eject Card (Type \"2\")");
+            case 3 -> System.out.println(
+
+                    """
+                    Enter Pin (Type "3")
+                    Eject Card (Type "2")
+                    ATM Vault Balance (Type "4")
+                    """
+
+                                        );
+            default -> System.out.println("Not an option...");
+        }
+    }
+    public void itemMenu()
+    {
+        System.out.println("\nType \"1\" to purchase a CD");
+        System.out.println("Type \"2\" to purchase a Book");
+        System.out.println("Type \"3\" to purchase a DVD");
+        System.out.println("Type \"4\" to display the total inventory value");
+        System.out.println("Type \"5\" to compare two items");
+        System.out.println("Type \"-1\" to exit/finalize order");
+
     }
     public boolean unlockStore() {
         return admin.didPass();

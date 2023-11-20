@@ -34,23 +34,26 @@ public class Crate
         System.out.println("Items: \n");
         for(int i = 0; i < buildHistory.size(); i++)
         {
-            System.out.println("***********************************************************************");
-            System.out.println("Name: " + this.buildHistory.get(i).getCatalog().get(i).getItemName());
-            System.out.println("Item ID: " + i);
-            System.out.println("Item Price: $" + this.buildHistory.get(i).getCatalog().get(i).getItemPrice());
-            if(this.buildHistory.get(i).getCatalog().get(i).getClass().equals(Book.class) && !this.buildHistory.get(i).getCatalog().get(i).isStatus())
+            if(!this.buildHistory.get(i).getCatalog().get(i).isStatus())
             {
-                System.out.println("Page Count: " + this.buildHistory.get(i).getCatalog().get(i).getSize());
+                System.out.println("***********************************************************************");
+                System.out.println("Name: " + this.buildHistory.get(i).getCatalog().get(i).getItemName());
+                System.out.println("Item ID: " + i);
+                System.out.println("Item Price: $" + this.buildHistory.get(i).getCatalog().get(i).getItemPrice());
+                if(this.buildHistory.get(i).getCatalog().get(i).getClass().equals(Book.class) && !this.buildHistory.get(i).getCatalog().get(i).isStatus())
+                {
+                    System.out.println("Page Count: " + this.buildHistory.get(i).getCatalog().get(i).getSize());
+                }
+                else if(this.buildHistory.get(i).getCatalog().get(i).getClass().equals(CD.class) && !this.buildHistory.get(i).getCatalog().get(i).isStatus())
+                {
+                    System.out.println("CD Length (in seconds): " + this.buildHistory.get(i).getCatalog().get(i).getSize());
+                }
+                else if(this.buildHistory.get(i).getCatalog().get(i).getClass().equals(DVD.class) && !this.buildHistory.get(i).getCatalog().get(i).isStatus())
+                {
+                    System.out.println("DVD Length (in seconds): " + this.buildHistory.get(i).getCatalog().get(i).getSize());
+                }
+                System.out.println("***********************************************************************");
             }
-            else if(this.buildHistory.get(i).getCatalog().get(i).getClass().equals(CD.class) && !this.buildHistory.get(i).getCatalog().get(i).isStatus())
-            {
-                System.out.println("CD Length (in seconds): " + this.buildHistory.get(i).getCatalog().get(i).getSize());
-            }
-            else if(this.buildHistory.get(i).getCatalog().get(i).getClass().equals(DVD.class) && !this.buildHistory.get(i).getCatalog().get(i).isStatus())
-            {
-                System.out.println("DVD Length (in seconds): " + this.buildHistory.get(i).getCatalog().get(i).getSize());
-            }
-            System.out.println("***********************************************************************");
         }
     }
     public void openCrate(int itemType) {

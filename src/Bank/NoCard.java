@@ -8,7 +8,7 @@ public class NoCard implements BankState {
     }
     @Override
     public void insertCard() {
-        System.out.println("Enter a pin: ");
+        System.out.println("Insertion was successful.");
         vault.changeVaultState(vault.hasCard());
     }
 

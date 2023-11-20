@@ -1,8 +1,9 @@
 package Store;
 
-public class StoreTester {
+public class Test
+{
     public static void main(String[] args)
     {
-        BookStore store = new BookStore();
+        BookStore bookStore = new BookStore();
     }
 }

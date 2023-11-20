@@ -3,6 +3,7 @@ import java.util.*;
 public class Salesman implements Pitch {
     private final Scanner scanner = new Scanner(System.in);
     private static int amountOfCustomers;
+    protected static boolean memberStat = true;
     public static int getAmountOfCustomers() {
         return amountOfCustomers;
     }
@@ -37,7 +38,7 @@ public class Salesman implements Pitch {
     }
     public void membershipDueDate()
     {
-        System.out.println("What month did you purchase your membership? ");
+        System.out.println("What month did you purchase your premium membership? ");
         System.out.println("Type in a number 1-12 to represent the month: ");
         int membershipMonth = scanner.nextInt();
         final float premiumPayment = 7.55f;
@@ -56,5 +57,6 @@ public class Salesman implements Pitch {
             case 12 -> System.out.println("Your membership payment of $" + premiumPayment + " will be due in January");
             default -> System.out.println("Error");
         }
+        System.out.println("\n");
     }
 }

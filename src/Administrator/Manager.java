@@ -25,6 +25,10 @@ public class Manager {
             log--;
         }
     }
+    public void membershipDueDate()
+    {
+        this.salesman.membershipDueDate();
+    }
 
     public int getLineCount() {
         return lineCount;
