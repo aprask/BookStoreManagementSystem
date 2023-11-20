@@ -13,8 +13,8 @@ import java.util.Scanner;
 public class BookStore implements BookStoreSpecification, Command {
     private static final Crate crate = new Crate();
     private final Admin admin = new Admin();
-    private Scanner scanner = new Scanner(System.in);
-    private ArrayList<Float> customerWallets = new ArrayList<>();
+    private final Scanner scanner = new Scanner(System.in);
+    private final ArrayList<Float> customerWallets = new ArrayList<>();
     private static Cart cart;
     private static final Manager theManager = new Manager();
     private static boolean proceedToPurchase = false;
@@ -37,16 +37,6 @@ public class BookStore implements BookStoreSpecification, Command {
             if(proceedToPurchase) this.makePurchaseCommand();
         }
 
-    }
-
-    public static void setProceedToPurchase(boolean proceedToPurchase) {
-        BookStore.proceedToPurchase = proceedToPurchase;
-    }
-    public Cart getCart() {
-        return BookStore.cart;
-    }
-    public void setCart(Cart cart) {
-        BookStore.cart = cart;
     }
 
     /**
@@ -286,19 +276,9 @@ public class BookStore implements BookStoreSpecification, Command {
         return admin.didPass();
     }
 
-    public Scanner getScanner() {
-        return scanner;
-    }
-
-    public void setScanner(Scanner scanner) {
-        this.scanner = scanner;
-    }
 
     public ArrayList<Float> getCustomerWallets() {
         return customerWallets;
     }
 
-    public void setCustomerWallets(ArrayList<Float> customerWallets) {
-        this.customerWallets = customerWallets;
-    }
 }
