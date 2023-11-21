@@ -59,7 +59,6 @@ public class Crate
     public void openCrate(int itemType) {
         for (int i = 0; i < buildHistory.size(); i++) {
             if (itemType == 1) {
-                System.out.println("CDs: \n");
                 if (this.buildHistory.get(i).getCatalog().get(i).getClass().equals(CD.class) && !this.buildHistory.get(i).getCatalog().get(i).isStatus()) {
                     System.out.println("***********************************************************************");
                     System.out.println("Name: " + this.buildHistory.get(i).getCatalog().get(i).getItemName());
@@ -69,7 +68,6 @@ public class Crate
                     System.out.println("***********************************************************************");
                 }
             } else if (itemType == 2) {
-                System.out.println("Books: \n");
                 if (this.buildHistory.get(i).getCatalog().get(i).getClass().equals(Book.class) && !this.buildHistory.get(i).getCatalog().get(i).isStatus()) {
                     System.out.println("***********************************************************************");
                     System.out.println("Name: " + this.buildHistory.get(i).getCatalog().get(i).getItemName());
@@ -80,7 +78,6 @@ public class Crate
 
                 }
             } else if (itemType == 3) {
-                System.out.println("DVDs: \n");
                 if (this.buildHistory.get(i).getCatalog().get(i).getClass().equals(DVD.class) && !this.buildHistory.get(i).getCatalog().get(i).isStatus()) {
                     System.out.println("***********************************************************************");
                     System.out.println("Name: " + this.buildHistory.get(i).getCatalog().get(i).getItemName());
@@ -105,15 +102,15 @@ public class Crate
                     {
                         if(tmpItem.compareTo(this.buildHistory.get(j).getCatalog().get(j)) > 0)
                         {
-                            System.out.println(tmpItem.getItemName() + " is more expensive than " + this.buildHistory.get(j).getCatalog().get(j));
+                            System.out.println(tmpItem.getItemName() + " is more expensive than " + this.buildHistory.get(j).getCatalog().get(j).getItemName());
                         }
                         else if(tmpItem.compareTo(this.buildHistory.get(j).getCatalog().get(j)) < 0)
                         {
-                            System.out.println(tmpItem.getItemName() + " is cheaper than " + this.buildHistory.get(j).getCatalog().get(j));
+                            System.out.println(tmpItem.getItemName() + " is cheaper than " + this.buildHistory.get(j).getCatalog().get(j).getItemName());
                         }
                         else
                         {
-                            System.out.println(tmpItem.getItemName() + " has the same price as " + this.buildHistory.get(j).getCatalog().get(j));
+                            System.out.println(tmpItem.getItemName() + " has the same price as " + this.buildHistory.get(j).getCatalog().get(j).getItemName());
                         }
                     }
                 }

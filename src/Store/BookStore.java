@@ -122,6 +122,10 @@ public class BookStore implements BookStoreSpecification, Command {
         if(completeOrRefund.equalsIgnoreCase("y"))
         {
             System.out.println("Your total is: $" + cart.cartTotal());
+            System.out.println("\n-------------------------------------------------------");
+            System.out.println("Receipt");
+            cart.orderHistory();
+            System.out.println("-------------------------------------------------------\n");
             cart.clearCart();
         }
         else if(completeOrRefund.equalsIgnoreCase("n"))

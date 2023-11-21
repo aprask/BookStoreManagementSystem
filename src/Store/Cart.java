@@ -30,12 +30,14 @@ public class Cart
     }
     public void orderHistory()
     {
-        for (Order value : orderHistory) {
+        for(int i = 0; i < orderHistory.size(); i++)
+        {
             System.out.println("****************************************");
-            System.out.println("Name: " + value.getItem().getItemName());
-            System.out.println("Price: $" + value.getItem().getItemPrice());
-            System.out.println("ID: " + value);
+            System.out.println("Name: " + orderHistory.get(i).getItem().getItemName());
+            System.out.println("Price: $" + orderHistory.get(i).getItem().getItemPrice());
+            System.out.println("ID: " + i);
             System.out.println("****************************************");
+
         }
     }
     public void clearCart(){

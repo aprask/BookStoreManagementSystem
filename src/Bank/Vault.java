@@ -6,7 +6,7 @@ public class Vault {
     private BankState correctPin;
     private BankState noVaultMoney;
     private BankState vaultState;
-    private int cashStoredInVault = 1000000000;
+    private static int cashStoredInVault = 1000000000;
     private boolean isCorrectPin = false;
     public Vault()
     {

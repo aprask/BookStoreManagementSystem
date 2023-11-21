@@ -18,13 +18,13 @@ public class Registrar
         {
             return "Hello, " + customerLog.get(ID).getName() +
                     "\nYour Payment Type: " + customerLog.get(ID).getPaymentType() +
-                    "\nCongratulations :D on your premium member purchase: \n";
+                    "\nPremium Membership: \n";
         }
         else if(!customerLog.get(ID).isPremium() && customerLog.get(ID) != null)
         {
             return "Hello, " + customerLog.get(ID).getName() +
                     "\nYour Payment Type: " + customerLog.get(ID).getPaymentType() +
-                    "\nStandard Membership ;(";
+                    "\nStandard Membership: \n";
         }
         else return null;
     }

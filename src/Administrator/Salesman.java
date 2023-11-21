@@ -2,14 +2,8 @@ package Administrator;
 import java.util.*;
 public class Salesman implements Pitch {
     private final Scanner scanner = new Scanner(System.in);
-    private static int amountOfCustomers;
-    protected static boolean memberStat = true;
-    public static int getAmountOfCustomers() {
-        return amountOfCustomers;
-    }
-    public static void setAmountOfCustomers(int amountOfCustomers) {
-        Salesman.amountOfCustomers = amountOfCustomers;
-    }
+    protected static int amountOfCustomers;
+    private final String[] paymentMethods = {"AMX", "Mastercard", "Discover", "Visa"};
     @Override
     public int lineTotal() {
         System.out.println("How many customers are in the line? ");
@@ -28,8 +22,26 @@ public class Salesman implements Pitch {
     }
     @Override
     public String askForPaymentType() {
-        System.out.println("Payment type? ");
-        return scanner.next();
+        do {
+            System.out.println("Payment type? (Choose from the following)");
+            System.out.println("\nAMX = 1\nMastercard = 2\nDiscover = 3\nVisa = 4");
+            String selectPaymentType = scanner.next();
+            switch (selectPaymentType) {
+                case "1" -> {
+                    return this.paymentMethods[0];
+                }
+                case "2" -> {
+                    return this.paymentMethods[1];
+                }
+                case "3" -> {
+                    return this.paymentMethods[2];
+                }
+                case "4" -> {
+                    return this.paymentMethods[3];
+                }
+                default -> System.out.println("Error");
+            }
+        } while (true);
     }
     @Override
     public String askForPremium() {
