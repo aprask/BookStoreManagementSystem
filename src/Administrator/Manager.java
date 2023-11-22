@@ -14,7 +14,8 @@ public class Manager {
         int customerLocation = 1;
         while(log > 0)
         {
-            System.out.println("Customer #" + customerLocation + "\n");
+            System.out.println("------------------------------------");
+            System.out.println("\n\tCustomer #" + customerLocation);
             int age = this.salesman.askForAge();
             String paymentType = this.salesman.askForPaymentType();
             String premiumStatus = this.salesman.askForPremium();

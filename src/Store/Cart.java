@@ -1,10 +1,11 @@
 package Store;
 import Factory.Item;
+
 import java.util.ArrayList;
 public class Cart
 {
     private Order order;
-    private static ArrayList<Order> orderHistory = new ArrayList<>();
+    protected static ArrayList<Order> orderHistory = new ArrayList<>();
     public Cart(Item item)
     {
         order = new Order(item);
@@ -39,6 +40,29 @@ public class Cart
             System.out.println("****************************************");
 
         }
+    }
+    public String getSoldItemName(int ID)
+    {
+        for(int i = 0; i < orderHistory.size(); i++)
+        {
+            if(ID == i)
+            {
+                return orderHistory.get(i).getItem().getItemName();
+            }
+
+        }
+        return null;
+    }
+    public double getItemPrice(int ID)
+    {
+        for(int i = 0; i < orderHistory.size(); i++)
+        {
+            if(ID == i)
+            {
+                return orderHistory.get(i).getItem().getItemPrice();
+            }
+        }
+        return -1;
     }
     public void clearCart(){
         orderHistory.clear();

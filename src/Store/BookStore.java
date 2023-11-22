@@ -7,9 +7,10 @@ import Bank.Vault;
 import Factory.Crate;
 import Factory.Item;
 
-import java.util.ArrayList;
-import java.util.Scanner;
-
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.*;
 public class BookStore implements BookStoreSpecification, Command {
     private static final Crate crate = new Crate();
     private final Admin admin = new Admin();
@@ -17,16 +18,28 @@ public class BookStore implements BookStoreSpecification, Command {
     private final ArrayList<Float> customerWallets = new ArrayList<>();
     private static Cart cart;
     private static final Manager theManager = new Manager();
+    private static ArrayList<Integer> soldIDHistory = new ArrayList<>();
     private static boolean proceedToPurchase = false;
-    public BookStore()
-    {
+    public BookStore() throws FileNotFoundException {
         if(unlockStore())
         {
             System.out.println("You need to build the items before the store opens...\n");
             while(true)
             {
                 System.out.println("What type of item would you like to create (1=CD,2=Book,3=DVD,-1=Exit)? ");
-                int itemType = scanner.nextInt();
+                int itemType = 0;
+                try {
+                    itemType = scanner.nextInt();
+                } catch(InputMismatchException e )
+                {
+                    System.out.println("You need to enter a number");
+                } catch(NoSuchElementException e)
+                {
+                    System.out.println("This is not a valid type");
+                } catch(Exception e)
+                {
+                    System.out.println("Error");
+                }
                 if(itemType == -1)
                 {
                     break;
@@ -37,6 +50,14 @@ public class BookStore implements BookStoreSpecification, Command {
             if(proceedToPurchase) this.makePurchaseCommand();
         }
 
+    }
+
+    public static ArrayList<Integer> getSoldIDHistory() {
+        return soldIDHistory;
+    }
+
+    public static void setSoldIDHistory(ArrayList<Integer> soldIDHistory) {
+        BookStore.soldIDHistory = soldIDHistory;
     }
 
     /**
@@ -59,7 +80,7 @@ public class BookStore implements BookStoreSpecification, Command {
         crate.openCrate();
     }
     @Override
-    public void makePurchaseCommand() {
+    public void makePurchaseCommand() throws FileNotFoundException {
         int customerCount = theManager.getLineCount();
         int customerID = 0;
         while(customerCount > 0)
@@ -82,6 +103,7 @@ public class BookStore implements BookStoreSpecification, Command {
                     System.out.println("Wallet: $" + getCustomerWallets().get(customerID));
                     System.out.println("Purchase the desired item by its associated ID: ");
                     int desiredItem = scanner.nextInt();
+                    soldIDHistory.add(desiredItem);
                     if(!(crate.retrieveSpecifiedItem(desiredItem).getItemPrice() > getCustomerWallets().get(customerID)))
                     {
                         getCustomerWallets().set(customerID, (float) (getCustomerWallets().get(customerID)-crate.retrieveSpecifiedItem(desiredItem).getItemPrice()));
@@ -115,7 +137,7 @@ public class BookStore implements BookStoreSpecification, Command {
 
     }
     @Override
-    public void completeOrderCommand(Cart cart) {
+    public void completeOrderCommand(Cart cart) throws FileNotFoundException {
         cart.orderHistory();
         System.out.println("Would you like to purchase the following items you added to your cart? (y/n)");
         String completeOrRefund = scanner.next();
@@ -126,6 +148,7 @@ public class BookStore implements BookStoreSpecification, Command {
             System.out.println("Receipt");
             cart.orderHistory();
             System.out.println("-------------------------------------------------------\n");
+            createReceipt();
             cart.clearCart();
         }
         else if(completeOrRefund.equalsIgnoreCase("n"))
@@ -134,7 +157,7 @@ public class BookStore implements BookStoreSpecification, Command {
         }
     }
     @Override
-    public void refundOrderCommand(Cart cart) {
+    public void refundOrderCommand(Cart cart) throws FileNotFoundException {
         System.out.println("Would you like to refund ALL the items (y/n)? ");
         String refundOption = scanner.next();
         if(refundOption.equalsIgnoreCase("y"))
@@ -163,7 +186,20 @@ public class BookStore implements BookStoreSpecification, Command {
         System.out.println("Select two items by ID to compare: ");
         int item1ID = scanner.nextInt();
         int item2ID = scanner.nextInt();
-        crate.compareItemsInCrate(item1ID,item2ID);
+        if(item1ID > crate.getBuildHistory().size() || item2ID > crate.getBuildHistory().size())
+        {
+            if(!crate.getBuildHistory().get(item1ID).getCatalog().get(item1ID).isStatus() ||
+                    !crate.getBuildHistory().get(item1ID).getCatalog().get(item2ID).isStatus())
+            {
+                crate.compareItemsInCrate(item1ID,item2ID);
+                System.out.println();
+            }
+            else
+            {
+                System.out.println("Error. Invalid ID(s)");
+                System.out.println();
+            }
+        }
     }
     @Override
     public void removeItemCommand(int itemID) {
@@ -175,27 +211,77 @@ public class BookStore implements BookStoreSpecification, Command {
         Vault newVault = new Vault();
         System.out.println("You need to withdraw money from our ATM before you make any purchases... ");
         System.out.println("You will need to enter your 4-digit pin number...");
-        System.out.println("Awaiting Service...");
-        System.out.println("WELCOME");
+        System.out.println("Awaiting Service...\n");
+        System.out.println("WELCOME\n");
         bankCommands(1);
-        int bankProcedure = scanner.nextInt();
+        int bankProcedure = 0;
+        boolean proceedWithBank = false;
+        while(!proceedWithBank)
+        {
+            try
+            {
+                bankProcedure = scanner.nextInt();
+                proceedWithBank = true;
+            }
+            catch (InputMismatchException e) {
+                System.out.println("Error");
+                System.out.println("You need to enter a number before you proceed.");
+            }
+        }
         while(true)
         {
             if(bankProcedure != 1)
             {
                 System.out.println("YOU NEED TO INSERT A CARD BEFORE YOU DO ANYTHING ELSE!");
                 bankCommands(1);
-                bankProcedure = scanner.nextInt();
+                proceedWithBank = false;
+                while(!proceedWithBank)
+                {
+                    try
+                    {
+                        bankProcedure = scanner.nextInt();
+                        proceedWithBank = true;
+                    } catch(InputMismatchException e)
+                    {
+                        System.out.println("Enter a number");
+                    }
+                }
             }
             else {
                 newVault.noCard().insertCard();
                 do {
                     bankCommands(3);
-                    bankProcedure = scanner.nextInt();
+                    bankProcedure = 0;
+                    proceedWithBank = false;
+                    while(!proceedWithBank)
+                    {
+                        try
+                        {
+                            bankProcedure = scanner.nextInt();
+                            proceedWithBank = true;
+                        }
+                        catch (InputMismatchException e) {
+                            System.out.println("Error");
+                            System.out.println("You need to enter a number before you proceed.");
+                        }
+                    }
                     if(bankProcedure == 3)
                     {
                         System.out.println("Type in 4-digit pin: ");
-                        String attemptedPin = scanner.next();
+                        String attemptedPin = "";
+                        proceedWithBank = false;
+                        while(!proceedWithBank)
+                        {
+                            try
+                            {
+                                attemptedPin = scanner.next();
+                                proceedWithBank = true;
+                            }
+                            catch (InputMismatchException e) {
+                                System.out.println("Error");
+                                System.out.println("You need to enter a number before you proceed.");
+                            }
+                        }
                         if(attemptedPin.length() != 4)
                         {
                             System.out.println("ERROR ");
@@ -206,7 +292,15 @@ public class BookStore implements BookStoreSpecification, Command {
                         {
                             newVault.hasCard().insertPin(attemptedPin);
                             System.out.println("How much would you like to withdraw? ");
-                            int withdrawnMoney = scanner.nextInt();
+                            int withdrawnMoney = 0;
+                            try
+                            {
+                                withdrawnMoney = scanner.nextInt();
+                            }
+                            catch (InputMismatchException e) {
+                                System.out.println("Error");
+                                System.out.println("Enter a number.");
+                            }
                             if(withdrawnMoney <= newVault.getCashStoredInVault())
                             {
                                 customerWallets.add((float) withdrawnMoney);
@@ -283,6 +377,22 @@ public class BookStore implements BookStoreSpecification, Command {
 
     public ArrayList<Float> getCustomerWallets() {
         return customerWallets;
+    }
+
+    public void createReceipt() throws FileNotFoundException {
+        File receipt = new File("order.csv");
+        PrintWriter out = new PrintWriter(receipt);
+        try {
+            for (Integer integer : soldIDHistory) {
+                out.println("-----------------------");
+                out.println("Name: " + cart.getSoldItemName(integer));
+                out.println("Price: " + cart.getSoldItemName(integer));
+                out.println("-----------------------");
+            }
+            out.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

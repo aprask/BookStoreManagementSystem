@@ -25,10 +25,6 @@ public class CDBuilder implements ItemBuilder {
         this.cd.setItemPrice(this.scanner.nextDouble());
     }
     @Override
-    public void buildItemStatus() {
-        this.cd.setItemStatus(false);
-    }
-    @Override
     public void buildItemSize() {
         System.out.println("How many seconds in the CD? ");
         this.cd.setItemSize(this.scanner.nextInt());

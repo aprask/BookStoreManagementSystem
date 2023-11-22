@@ -20,18 +20,11 @@ public class DVDBuilder implements ItemBuilder {
         System.out.println("What is the name of the DVD? ");
         this.dvd.setItemName(this.scanner.next());
     }
-
     @Override
     public void buildItemPrice() {
         System.out.println("How much does it cost? ");
         this.dvd.setItemPrice(this.scanner.nextDouble());
     }
-
-    @Override
-    public void buildItemStatus() {
-        this.dvd.setItemStatus(false);
-    }
-
     @Override
     public void buildItemSize() {
         System.out.println("How many seconds in the DVD? ");

@@ -132,7 +132,10 @@ public class Crate
         int total = 0;
         for(int i = 0; i < buildHistory.size(); i++)
         {
-            total+=this.buildHistory.get(i).getCatalog().get(i).getItemPrice();
+            if(this.buildHistory.get(i).getCatalog().get(i) != null && !this.buildHistory.get(i).getCatalog().get(i).isStatus())
+            {
+                total+=this.buildHistory.get(i).getCatalog().get(i).getItemPrice();
+            }
         }
         return total;
     }

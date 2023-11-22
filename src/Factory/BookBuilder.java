@@ -26,12 +26,6 @@ public class BookBuilder implements ItemBuilder
         System.out.println("How much does it cost? ");
         this.book.setItemPrice(this.scanner.nextDouble());
     }
-
-    @Override
-    public void buildItemStatus() {
-        this.book.setItemStatus(false);
-    }
-
     @Override
     public void buildItemSize() {
         System.out.println("How many pages? ");
