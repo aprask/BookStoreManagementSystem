@@ -1,4 +1,8 @@
 package Administrator;
+import Administrator.Security.AgeException;
+import Administrator.Security.MembershipTypeException;
+import Administrator.Security.NameException;
+
 import java.util.*;
 public class Salesman implements Pitch {
     private final Scanner scanner = new Scanner(System.in);
@@ -7,18 +11,47 @@ public class Salesman implements Pitch {
     @Override
     public int lineTotal() {
         System.out.println("How many customers are in the line? ");
-        amountOfCustomers = scanner.nextInt();
+        amountOfCustomers = 0;
+        try{
+            amountOfCustomers = scanner.nextInt();
+        } catch(InputMismatchException e)
+        {
+            System.out.println("You need to enter a number");
+        } catch(NoSuchElementException e)
+        {
+            System.out.println("This is not a valid type");
+        } catch(Exception e)
+        {
+            System.out.println("Error: " + e);
+        }
         return amountOfCustomers;
     }
     @Override
     public String askForName() {
         System.out.println("What is your name? ");
-        return scanner.next();
+        String name = "";
+        try{
+            name = scanner.next();
+            checkCustomerName(name);
+        } catch(Exception e)
+        {
+            System.out.println("Error: " + e);
+        }
+        return name;
     }
     @Override
     public int askForAge() {
         System.out.println("Age? ");
-        return scanner.nextInt();
+        int age = 0;
+        try
+        {
+            age = scanner.nextInt();
+            checkCustomerAge(age);
+        } catch(Exception e)
+        {
+            System.out.println("Error: " + e);
+        }
+        return age;
     }
     @Override
     public String askForPaymentType() {
@@ -46,7 +79,15 @@ public class Salesman implements Pitch {
     @Override
     public String askForPremium() {
         System.out.println("Would you like premium membership (y/n)? ");
-        return scanner.next();
+        String memberType = "";
+        try{
+            memberType = scanner.next();
+            checkMembershipType(memberType);
+        } catch(Exception e)
+        {
+            System.out.println("Error: " + e);
+        }
+        return memberType;
     }
     public void membershipDueDate()
     {
@@ -70,5 +111,26 @@ public class Salesman implements Pitch {
             default -> System.out.println("Error");
         }
         System.out.println("\n");
+    }
+    public static void checkCustomerAge(int age) throws AgeException{
+        if(age < 16)
+        {
+            throw new AgeException("\nYou must be 16 to purchase at this store.");
+        }
+    }
+    public static void checkCustomerName(String name) throws NameException{
+        for(char c: name.toCharArray())
+        {
+            if(Character.isDigit(c))
+            {
+                throw new NameException("\nNames cannot contain digits.");
+            }
+        }
+    }
+    public static void checkMembershipType(String type) throws MembershipTypeException{
+        if(!type.equalsIgnoreCase("y") || !type.equalsIgnoreCase("n"))
+        {
+            throw new MembershipTypeException("\nThere are only two choices, \"y\" and \"n\"...");
+        }
     }
 }

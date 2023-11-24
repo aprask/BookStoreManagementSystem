@@ -1,5 +1,6 @@
 package Factory;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class DVDBuilder implements ItemBuilder {
@@ -12,23 +13,54 @@ public class DVDBuilder implements ItemBuilder {
     @Override
     public void buildItemType() {
         System.out.println("What genre is this DVD? ");
-        this.dvd.setItemType(this.scanner.next());
+        String genre = "";
+        try{
+            genre = scanner.next();
+        } catch (Exception e)
+        {
+            System.out.println("Error: " + e);
+        }
+        this.dvd.setItemType(genre);
     }
 
     @Override
     public void buildItemName() {
         System.out.println("What is the name of the DVD? ");
-        this.dvd.setItemName(this.scanner.next());
+        String name = "";
+        try{
+            name = scanner.next();
+        } catch (Exception e)
+        {
+            System.out.println("Error: " + e);
+        }
+        this.dvd.setItemName(name);
     }
     @Override
     public void buildItemPrice() {
         System.out.println("How much does it cost? ");
-        this.dvd.setItemPrice(this.scanner.nextDouble());
+        double price = 0;
+        try {
+            price = scanner.nextDouble();
+        } catch (InputMismatchException e)
+        {
+            System.out.println("Invalid Price");
+        } catch (Exception e)
+        {
+            System.out.println("Error: " + e);
+        }
+        this.dvd.setItemPrice(price);
     }
     @Override
     public void buildItemSize() {
         System.out.println("How many seconds in the DVD? ");
-        this.dvd.setItemSize(this.scanner.nextInt());
+        int size = 0;
+        try{
+            size = scanner.nextInt();
+        } catch(InputMismatchException e)
+        {
+            System.out.println("Error: " + e);
+        }
+        this.dvd.setItemSize(size);
     }
     public DVD buildDVD()
     {

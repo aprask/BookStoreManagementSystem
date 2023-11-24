@@ -12,24 +12,55 @@ public class BookBuilder implements ItemBuilder
     @Override
     public void buildItemType() {
         System.out.println("What genre is this book? ");
-        this.book.setItemType(this.scanner.next());
+        String genre = "";
+        try{
+            genre = scanner.next();
+        } catch (Exception e)
+        {
+            System.out.println("Error: " + e);
+        }
+        this.book.setItemType(genre);
     }
 
     @Override
     public void buildItemName() {
         System.out.println("What is the name of the book? ");
-        this.book.setItemName(this.scanner.next());
+        String name = "";
+        try{
+            name = scanner.next();
+        } catch (Exception e)
+        {
+            System.out.println("Error: " + e);
+        }
+        this.book.setItemName(name);
     }
 
     @Override
     public void buildItemPrice() {
         System.out.println("How much does it cost? ");
-        this.book.setItemPrice(this.scanner.nextDouble());
+        double price = 0;
+        try {
+            price = scanner.nextDouble();
+        } catch (InputMismatchException e)
+        {
+            System.out.println("Invalid Price");
+        } catch (Exception e)
+        {
+            System.out.println("Error: " + e);
+        }
+        this.book.setItemPrice(price);
     }
     @Override
     public void buildItemSize() {
         System.out.println("How many pages? ");
-        this.book.setItemSize(this.scanner.nextInt());
+        int size = 0;
+        try{
+            size = scanner.nextInt();
+        } catch(InputMismatchException e)
+        {
+            System.out.println("Error: " + e);
+        }
+        this.book.setItemSize(size);
     }
     public Book buildBook()
     {

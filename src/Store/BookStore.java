@@ -30,15 +30,18 @@ public class BookStore implements BookStoreSpecification, Command {
                 int itemType = 0;
                 try {
                     itemType = scanner.nextInt();
-                } catch(InputMismatchException e )
+                } catch(InputMismatchException e)
                 {
                     System.out.println("You need to enter a number");
+                    break;
                 } catch(NoSuchElementException e)
                 {
                     System.out.println("This is not a valid type");
+                    break;
                 } catch(Exception e)
                 {
-                    System.out.println("Error");
+                    System.out.println("Error: " + e);
+                    break;
                 }
                 if(itemType == -1)
                 {
@@ -102,7 +105,22 @@ public class BookStore implements BookStoreSpecification, Command {
                     crate.openCrate(purchaseOption);
                     System.out.println("Wallet: $" + getCustomerWallets().get(customerID));
                     System.out.println("Purchase the desired item by its associated ID: ");
-                    int desiredItem = scanner.nextInt();
+                    int desiredItem = 0;
+                    try{
+                        desiredItem = scanner.nextInt();
+                    } catch(InputMismatchException e)
+                    {
+                        System.out.println("You need to enter a number");
+                        break;
+                    } catch(NoSuchElementException e)
+                    {
+                        System.out.println("This is not a valid type");
+                        break;
+                    } catch(Exception e)
+                    {
+                        System.out.println("Error: " + e);
+                        break;
+                    }
                     soldIDHistory.add(desiredItem);
                     if(!(crate.retrieveSpecifiedItem(desiredItem).getItemPrice() > getCustomerWallets().get(customerID)))
                     {
@@ -140,7 +158,13 @@ public class BookStore implements BookStoreSpecification, Command {
     public void completeOrderCommand(Cart cart) throws FileNotFoundException {
         cart.orderHistory();
         System.out.println("Would you like to purchase the following items you added to your cart? (y/n)");
-        String completeOrRefund = scanner.next();
+        String completeOrRefund = "";
+        try{
+            completeOrRefund = scanner.next();
+        } catch(Exception e)
+        {
+            System.out.println("Error");
+        }
         if(completeOrRefund.equalsIgnoreCase("y"))
         {
             System.out.println("Your total is: $" + cart.cartTotal());
@@ -159,7 +183,13 @@ public class BookStore implements BookStoreSpecification, Command {
     @Override
     public void refundOrderCommand(Cart cart) throws FileNotFoundException {
         System.out.println("Would you like to refund ALL the items (y/n)? ");
-        String refundOption = scanner.next();
+        String refundOption = "";
+        try{
+            refundOption = scanner.next();
+        } catch(Exception e)
+        {
+            System.out.println("Error: " + e);
+        }
         if(refundOption.equalsIgnoreCase("y"))
         {
             System.out.println("You will be refunded: $" + cart.cartTotal());
@@ -171,7 +201,22 @@ public class BookStore implements BookStoreSpecification, Command {
             {
                 cart.orderHistory();
                 System.out.println("Which item by ID would you like to remove from your cart? (exit = -1) ");
-                int itemByID = scanner.nextInt();
+                int itemByID = 0;
+                try{
+                   itemByID = scanner.nextInt();
+                } catch(InputMismatchException e)
+                {
+                    System.out.println("You need to enter a number");
+                    break;
+                } catch(NoSuchElementException e)
+                {
+                    System.out.println("This is not a valid type");
+                    break;
+                } catch(Exception e)
+                {
+                    System.out.println("Error: " + e);
+                    break;
+                }
                 if(itemByID == -1 || cart.getOrderHistory().size() == 0)
                 {
                     completeOrderCommand(cart);
@@ -183,9 +228,35 @@ public class BookStore implements BookStoreSpecification, Command {
     }
     @Override
     public void compareTwoItemsCommand() {
-        System.out.println("Select two items by ID to compare: ");
-        int item1ID = scanner.nextInt();
-        int item2ID = scanner.nextInt();
+        System.out.println("Select two items by ID to compare. ");
+        System.out.println("Enter the first ID: ");
+        int item1ID = 0;
+        try{
+            item1ID = scanner.nextInt();
+        } catch(InputMismatchException e)
+        {
+            System.out.println("You need to enter a number");
+        } catch(NoSuchElementException e)
+        {
+            System.out.println("This is not a valid type");
+        } catch(Exception e)
+        {
+            System.out.println("Error: " + e);
+        }
+        System.out.println("Enter the second ID: ");
+        int item2ID = 0;
+        try{
+            item2ID = scanner.nextInt();
+        } catch(InputMismatchException e)
+        {
+            System.out.println("You need to enter a number");
+        } catch(NoSuchElementException e)
+        {
+            System.out.println("This is not a valid type");
+        } catch(Exception e)
+        {
+            System.out.println("Error: " + e);
+        }
         if(item1ID > crate.getBuildHistory().size() || item2ID > crate.getBuildHistory().size())
         {
             if(!crate.getBuildHistory().get(item1ID).getCatalog().get(item1ID).isStatus() ||
