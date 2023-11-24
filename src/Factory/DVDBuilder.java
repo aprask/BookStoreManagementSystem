@@ -32,33 +32,42 @@ public class DVDBuilder implements ItemBuilder {
         } catch (Exception e)
         {
             System.out.println("Error: " + e);
+            System.out.println("We will call this dvd \"default_dvd\"");
+            name = "default_dvd";
         }
         this.dvd.setItemName(name);
     }
     @Override
     public void buildItemPrice() {
         System.out.println("How much does it cost? ");
-        double price = 0;
+        double price;
         try {
             price = scanner.nextDouble();
         } catch (InputMismatchException e)
         {
             System.out.println("Invalid Price");
+            System.out.println("We will put this item at $0");
+            price = 0;
         } catch (Exception e)
         {
             System.out.println("Error: " + e);
+            System.out.println("We will put this item at $0");
+            price = 0;
         }
+        scanner.nextLine();
         this.dvd.setItemPrice(price);
     }
     @Override
     public void buildItemSize() {
         System.out.println("How many seconds in the DVD? ");
-        int size = 0;
+        int size;
         try{
             size = scanner.nextInt();
         } catch(InputMismatchException e)
         {
             System.out.println("Error: " + e);
+            System.out.println("We will say that the second count is 1");
+            size = 1;
         }
         this.dvd.setItemSize(size);
     }

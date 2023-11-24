@@ -25,12 +25,14 @@ public class BookBuilder implements ItemBuilder
     @Override
     public void buildItemName() {
         System.out.println("What is the name of the book? ");
-        String name = "";
+        String name;
         try{
             name = scanner.next();
         } catch (Exception e)
         {
             System.out.println("Error: " + e);
+            System.out.println("This book will be called \"default_book\"");
+            name = "default_book";
         }
         this.book.setItemName(name);
     }
@@ -38,27 +40,34 @@ public class BookBuilder implements ItemBuilder
     @Override
     public void buildItemPrice() {
         System.out.println("How much does it cost? ");
-        double price = 0;
+        double price;
         try {
             price = scanner.nextDouble();
         } catch (InputMismatchException e)
         {
             System.out.println("Invalid Price");
+            System.out.println("We will put this item at $0");
+            price = 0;
         } catch (Exception e)
         {
             System.out.println("Error: " + e);
+            System.out.println("We will put this item at $0");
+            price = 0;
         }
+        scanner.nextLine();
         this.book.setItemPrice(price);
     }
     @Override
     public void buildItemSize() {
         System.out.println("How many pages? ");
-        int size = 0;
+        int size;
         try{
             size = scanner.nextInt();
         } catch(InputMismatchException e)
         {
             System.out.println("Error: " + e);
+            System.out.println("We will say that the page count is 1");
+            size = 1;
         }
         this.book.setItemSize(size);
     }

@@ -20,6 +20,7 @@ public class BookStore implements BookStoreSpecification, Command {
     private static final Manager theManager = new Manager();
     private static ArrayList<Integer> soldIDHistory = new ArrayList<>();
     private static boolean proceedToPurchase = false;
+    private static int itemType = 0;
     public BookStore() throws FileNotFoundException {
         if(unlockStore())
         {
@@ -27,27 +28,35 @@ public class BookStore implements BookStoreSpecification, Command {
             while(true)
             {
                 System.out.println("What type of item would you like to create (1=CD,2=Book,3=DVD,-1=Exit)? ");
-                int itemType = 0;
                 try {
                     itemType = scanner.nextInt();
+                    crate.addToBuildHistory(itemType);
                 } catch(InputMismatchException e)
                 {
                     System.out.println("You need to enter a number");
+                    System.out.println("We will assign you a CD to build...");
+                    itemType = 1;
+                    crate.addToBuildHistory(itemType);
                     break;
                 } catch(NoSuchElementException e)
                 {
                     System.out.println("This is not a valid type");
+                    System.out.println("We will assign you a Book to build...");
+                    itemType = 2;
+                    crate.addToBuildHistory(itemType);
                     break;
                 } catch(Exception e)
                 {
                     System.out.println("Error: " + e);
+                    System.out.println("We will assign you a DVD to build...");
+                    itemType = 3;
+                    crate.addToBuildHistory(itemType);
                     break;
                 }
                 if(itemType == -1)
                 {
                     break;
                 }
-                crate.addToBuildHistory(itemType);
             }
             this.catalogCustomers();
             if(proceedToPurchase) this.makePurchaseCommand();
@@ -61,6 +70,14 @@ public class BookStore implements BookStoreSpecification, Command {
 
     public static void setSoldIDHistory(ArrayList<Integer> soldIDHistory) {
         BookStore.soldIDHistory = soldIDHistory;
+    }
+
+    public static int getItemType() {
+        return itemType;
+    }
+
+    public static void setItemType(int itemType) {
+        BookStore.itemType = itemType;
     }
 
     /**

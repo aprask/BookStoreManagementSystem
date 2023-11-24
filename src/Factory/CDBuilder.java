@@ -25,39 +25,48 @@ public class CDBuilder implements ItemBuilder {
     @Override
     public void buildItemName() {
         System.out.println("What is the name of the CD? ");
-        String name = "";
+        String name;
         try{
             name = scanner.next();
         } catch (Exception e)
         {
             System.out.println("Error: " + e);
+            System.out.println("This book will be called \"default_cd\"");
+            name = "default_cd";
         }
         this.cd.setItemName(name);
     }
     @Override
     public void buildItemPrice() {
         System.out.println("How much does it cost? ");
-        double price = 0;
+        double price;
         try {
             price = scanner.nextDouble();
         } catch (InputMismatchException e)
         {
             System.out.println("Invalid Price");
+            System.out.println("We will put this item at $0");
+            price = 0;
         } catch (Exception e)
         {
             System.out.println("Error: " + e);
+            System.out.println("We will put this item at $0");
+            price = 0;
         }
+        scanner.nextLine();
         this.cd.setItemPrice(price);
     }
     @Override
     public void buildItemSize() {
         System.out.println("How many seconds in the CD? ");
-        int size = 0;
+        int size;
         try{
             size = scanner.nextInt();
         } catch(InputMismatchException e)
         {
             System.out.println("Error: " + e);
+            System.out.println("We will say that the second count is 1");
+            size = 1;
         }
         this.cd.setItemSize(size);
     }

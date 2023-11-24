@@ -10,19 +10,23 @@ public class Salesman implements Pitch {
     private final String[] paymentMethods = {"AMX", "Mastercard", "Discover", "Visa"};
     @Override
     public int lineTotal() {
-        System.out.println("How many customers are in the line? ");
-        amountOfCustomers = 0;
         try{
+            System.out.println("How many customers are in the line? ");
             amountOfCustomers = scanner.nextInt();
         } catch(InputMismatchException e)
         {
-            System.out.println("You need to enter a number");
+            System.out.println("Error: " + e);
+            System.out.println("You need to enter a whole number");
+            amountOfCustomers = scanner.nextInt();
         } catch(NoSuchElementException e)
         {
+            System.out.println("Error: " + e);
             System.out.println("This is not a valid type");
+            amountOfCustomers = scanner.nextInt();
         } catch(Exception e)
         {
             System.out.println("Error: " + e);
+            amountOfCustomers = scanner.nextInt();
         }
         return amountOfCustomers;
     }
