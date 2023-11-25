@@ -1,9 +1,10 @@
-import Store.BookStore;
+import Store.StandardStore;
 
 import java.io.FileNotFoundException;
 
-public class BuildDriver {
+public class StandardDriver
+{
     public static void main(String[] args) throws FileNotFoundException {
-        BookStore bookStore = new BookStore();
+        StandardStore standardStore = new StandardStore();
     }
 }
