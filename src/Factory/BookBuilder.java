@@ -79,6 +79,10 @@ public class BookBuilder implements ItemBuilder
         buildItemSize();
         return new Book(this.book.getItemName(), this.book.getItemPrice(), this.book.getItemType(), this.book.getSize());
     }
+    public Book buildBook(String name, double price, String itemType, int size)
+    {
+        return new Book(name,price,itemType,size);
+    }
     public Book getBook() {
         return book;
     }

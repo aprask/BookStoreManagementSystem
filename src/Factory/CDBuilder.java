@@ -78,6 +78,10 @@ public class CDBuilder implements ItemBuilder {
         buildItemSize();
         return new CD(this.cd.getItemName(), this.cd.getItemPrice(), this.cd.getItemType(), this.cd.getSize());
     }
+    public CD buildCD(String name, double price, String itemType, int size)
+    {
+        return new CD(name,price,itemType,size);
+    }
     public CD getCd() {
         return cd;
     }

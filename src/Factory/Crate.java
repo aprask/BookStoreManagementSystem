@@ -1,5 +1,9 @@
 package Factory;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Crate
@@ -139,7 +143,6 @@ public class Crate
         }
         return total;
     }
-
     public ArrayList<Engineer> getBuildHistory() {
         return this.buildHistory;
     }
@@ -154,5 +157,115 @@ public class Crate
 
     public void setEngineer(Engineer engineer) {
         this.engineer = engineer;
+    }
+    private static class ImportDefault
+    {
+        private static ArrayList<Item> defaultItemHistory = new ArrayList<>();
+        private CDBuilder cdBuilder = new CDBuilder();
+        private DVDBuilder dvdBuilder = new DVDBuilder();
+        private BookBuilder bookBuilder = new BookBuilder();
+        protected final String pathToDefBooks = "src/Factory/default_books.csv";
+        protected final String pathToDefCDs = "src/Factory/default_cds.csv";
+        protected final String pathToDefDVDs = "src/Factory/default_dvds.csv";
+        protected String line = "";
+        public ImportDefault() {
+            BufferedReader bufferedReader;
+            {
+                try {
+                    bufferedReader = new BufferedReader(new FileReader(pathToDefBooks));
+                    while((line = bufferedReader.readLine()) != null)
+                    {
+                        String[] strings = line.split(",");
+                        String name = strings[0];
+                        double price = Double.parseDouble(strings[1]);
+                        String genre = strings[2];
+                        double size = Double.parseDouble(strings[3]);
+                        defaultItemHistory.add(bookBuilder.buildBook(name,price,genre,(int) size));
+                    }
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            {
+                try {
+                    bufferedReader = new BufferedReader(new FileReader(pathToDefCDs));
+                    while((line = bufferedReader.readLine()) != null)
+                    {
+                        String[] strings = line.split(",");
+                        String name = strings[0];
+                        double price = Double.parseDouble(strings[1]);
+                        String genre = strings[2];
+                        double size = Double.parseDouble(strings[3]);
+                        defaultItemHistory.add(cdBuilder.buildCD(name,price,genre,(int) size));
+                    }
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            {
+                try {
+                    bufferedReader = new BufferedReader(new FileReader(pathToDefDVDs));
+                    while((line = bufferedReader.readLine()) != null)
+                    {
+                        String[] strings = line.split(",");
+                        String name = strings[0];
+                        double price = Double.parseDouble(strings[1]);
+                        String genre = strings[2];
+                        double size = Double.parseDouble(strings[3]);
+                        defaultItemHistory.add(dvdBuilder.buildDVD(name,price,genre,(int) size));
+                    }
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        public void display()
+        {
+            for (Item item : defaultItemHistory) {
+                System.out.println(item.getItemName());
+            }
+        }
+        public static ArrayList<Item> getDefaultItemHistory() {
+            return defaultItemHistory;
+        }
+
+        public static void setDefaultItemHistory(ArrayList<Item> defaultItemHistory) {
+            ImportDefault.defaultItemHistory = defaultItemHistory;
+        }
+
+        public BookBuilder getBookBuilder() {
+            return bookBuilder;
+        }
+
+        public void setBookBuilder(BookBuilder bookBuilder) {
+            this.bookBuilder = bookBuilder;
+        }
+
+        public DVDBuilder getDvdBuilder() {
+            return dvdBuilder;
+        }
+
+        public void setDvdBuilder(DVDBuilder dvdBuilder) {
+            this.dvdBuilder = dvdBuilder;
+        }
+
+        public CDBuilder getCdBuilder() {
+            return cdBuilder;
+        }
+
+        public void setCdBuilder(CDBuilder cdBuilder) {
+            this.cdBuilder = cdBuilder;
+        }
+    }
+    public static void main(String[] args)
+    {
+        ImportDefault importDefault = new ImportDefault();
+        importDefault.display();
     }
 }

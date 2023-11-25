@@ -132,8 +132,9 @@ public class Salesman implements Pitch {
         }
     }
     public static void checkMembershipType(String type) throws MembershipTypeException{
-        if(!type.equalsIgnoreCase("y") || !type.equalsIgnoreCase("n"))
-        {
+        if (!type.equalsIgnoreCase("n")) {
+            throw new MembershipTypeException("\nThere are only two choices, \"y\" and \"n\"...");
+        } else if (!type.equalsIgnoreCase("y")) {
             throw new MembershipTypeException("\nThere are only two choices, \"y\" and \"n\"...");
         }
     }

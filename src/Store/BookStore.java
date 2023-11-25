@@ -474,7 +474,7 @@ public class BookStore implements BookStoreSpecification, Command {
             for (Integer integer : soldIDHistory) {
                 out.println("-----------------------");
                 out.println("Name: " + cart.getSoldItemName(integer));
-                out.println("Price: " + cart.getSoldItemName(integer));
+                out.println("Price: " + cart.getItemPrice(integer));
                 out.println("-----------------------");
             }
             out.close();

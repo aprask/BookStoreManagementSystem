@@ -79,6 +79,10 @@ public class DVDBuilder implements ItemBuilder {
         buildItemSize();
         return new DVD(this.dvd.getItemName(), this.dvd.getItemPrice(), this.dvd.getItemType(), this.dvd.getSize());
     }
+    public DVD buildDVD(String name, double price, String itemType, int size)
+    {
+        return new DVD(name,price,itemType,size);
+    }
     public Scanner getScanner() {
         return scanner;
     }
