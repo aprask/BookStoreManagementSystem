@@ -7,45 +7,20 @@ import Bank.Vault;
 import Factory.DefaultCrate;
 import Factory.Item;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
+import java.io.*;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public class StandardStore implements BookStoreSpecification, Command {
-    /**
-     * @param itemType receive an itemType (1=CD,2=Book,3=DVD)
-     * @param amount   receive the quantity (amount = quantity, in a while loop --> amount--)
-     */
-    private DefaultCrate defaultCrate = new DefaultCrate();
+    private final DefaultCrate defaultCrate = new DefaultCrate();
     private final Admin admin = new Admin();
     private final Scanner scanner = new Scanner(System.in);
-    private ArrayList<Float> customerWallets = new ArrayList<>();
+    private final ArrayList<Float> customerWallets = new ArrayList<>();
     private static Cart cart;
     private static final Manager theManager = new Manager();
-    private static ArrayList<Integer> soldIDHistory = new ArrayList<>();
+    private static final ArrayList<Integer> soldIDHistory = new ArrayList<>();
     private static boolean proceedToPurchase = false;
     private static int itemType = 0;
-
-    public static ArrayList<Integer> getSoldIDHistory() {
-        return soldIDHistory;
-    }
-
-    public static void setSoldIDHistory(ArrayList<Integer> soldIDHistory) {
-        StandardStore.soldIDHistory = soldIDHistory;
-    }
-
-    public static boolean isProceedToPurchase() {
-        return proceedToPurchase;
-    }
-
-    public static void setProceedToPurchase(boolean proceedToPurchase) {
-        StandardStore.proceedToPurchase = proceedToPurchase;
-    }
-
     public ArrayList<Float> getCustomerWallets() {
         return customerWallets;
     }
@@ -169,12 +144,43 @@ public class StandardStore implements BookStoreSpecification, Command {
         }
         if(completeOrRefund.equalsIgnoreCase("y"))
         {
+            createReceipt();
             System.out.println("Your total is: $" + cart.cartTotal());
             System.out.println("\n-------------------------------------------------------");
             System.out.println("Receipt");
-            cart.orderHistory();
+            String line;
+            BufferedReader bufferedReader;
+            {
+                try {
+                    bufferedReader = new BufferedReader(new FileReader("src/Store/order.csv"));
+                    while((line = bufferedReader.readLine()) != null)
+                    {
+                        String[] strings = line.split("\n");
+                        for (String string : strings) {
+                            System.out.println(string);
+                        }
+                    }
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
             System.out.println("-------------------------------------------------------\n");
-            createReceipt();
+            {
+                try {
+                    bufferedReader = new BufferedReader(new FileReader("src/Store/order.csv"));
+                    while((line = bufferedReader.readLine()) != null)
+                    {
+                        String[] strings = line.split("\n");
+                        Arrays.fill(strings, "");
+                    }
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
             cart.clearCart();
         }
         else if(completeOrRefund.equalsIgnoreCase("n"))
@@ -444,22 +450,16 @@ public class StandardStore implements BookStoreSpecification, Command {
     public boolean unlockStore() {
         return admin.didPass();
     }
-
-    public DefaultCrate getDefaultCrate() {
-        return defaultCrate;
-    }
-
-    public void setDefaultCrate(DefaultCrate defaultCrate) {
-        this.defaultCrate = defaultCrate;
-    }
     public void createReceipt() throws FileNotFoundException {
-        File receipt = new File("order.csv");
+        File receipt = new File("src/Store/order.csv");
         PrintWriter out = new PrintWriter(receipt);
         try {
-            for (Integer integer : soldIDHistory) {
+            for(int i = 0; i < soldIDHistory.size(); i++)
+            {
                 out.println("-----------------------");
-                out.println("Name: " + cart.getSoldItemName(integer));
-                out.println("Price: " + cart.getItemPrice(integer));
+                out.println("Sold Item Name: " + cart.getSoldItemName(i));
+                out.println(("Sold Item Price: $" + cart.getItemPrice(i)));
+                out.println(("Sold Item ID: " + soldIDHistory.get(i)));
                 out.println("-----------------------");
             }
             out.close();
@@ -468,3 +468,7 @@ public class StandardStore implements BookStoreSpecification, Command {
         }
     }
 }
+
+/*
+TODO: Figure out a way to separate the receipts by the customer's name
+ */

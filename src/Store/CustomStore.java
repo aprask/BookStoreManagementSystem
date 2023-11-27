@@ -18,7 +18,7 @@ public class CustomStore implements BookStoreSpecification, Command {
     private final ArrayList<Float> customerWallets = new ArrayList<>();
     private static Cart cart;
     private static final Manager theManager = new Manager();
-    private static ArrayList<Integer> soldIDHistory = new ArrayList<>();
+    private static final ArrayList<Integer> soldIDHistory = new ArrayList<>();
     private static boolean proceedToPurchase = false;
     private static int itemType = 0;
     public CustomStore() throws FileNotFoundException {
@@ -63,15 +63,6 @@ public class CustomStore implements BookStoreSpecification, Command {
         }
 
     }
-
-    public static ArrayList<Integer> getSoldIDHistory() {
-        return soldIDHistory;
-    }
-
-    public static void setSoldIDHistory(ArrayList<Integer> soldIDHistory) {
-        CustomStore.soldIDHistory = soldIDHistory;
-    }
-
     public static int getItemType() {
         return itemType;
     }
