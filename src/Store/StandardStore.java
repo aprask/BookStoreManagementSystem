@@ -45,7 +45,10 @@ public class StandardStore implements BookStoreSpecification, Command {
     }
     @Override
     public void restockProduct(int itemType, int amount) {
-
+        while(amount > 0){
+            defaultCrate.addToItemList(itemType);
+            amount--;
+        }
     }
 
     @Override
@@ -176,7 +179,7 @@ public class StandardStore implements BookStoreSpecification, Command {
             {
                 System.out.println("\n\tReceipt: ");
                 cart.orderHistory();
-                System.out.println("Which item by ID would you like to remove from your cart? (exit = -1) ");
+                System.out.println("Which item by NAME would you like to remove from your cart? (exit = \"-1\") ");
                 int itemByID;
                 try{
                     itemByID = scanner.nextInt();
@@ -431,7 +434,7 @@ public class StandardStore implements BookStoreSpecification, Command {
             out.write("**********************************\n");
             out.write("Customer Name: " + account.getName() + "\n");
             out.write("Customer ID: " + account.getID() + "\n");
-            for(int i = 0; i < account.customerOrderHistory.size(); i++)
+            for(int i = 0; i < cart.orderAmount(); i++)
             {
                 out.write("---------------------------------\n");
                 out.write("Item Name: " + cart.getSoldItemName(i) + "\n");
@@ -445,5 +448,10 @@ public class StandardStore implements BookStoreSpecification, Command {
             throw new RuntimeException(e);
         }
     }
-
 }
+/*
+TODO
+    2) Refine Restock Procedure
+    3) Finish Try/Catch Blocks
+    4) Add additional feature
+ */

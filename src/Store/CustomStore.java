@@ -7,9 +7,7 @@ import Bank.Vault;
 import Factory.Crate;
 import Factory.Item;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.*;
 public class CustomStore implements BookStoreSpecification, Command {
     private static final Crate crate = new Crate();
@@ -21,6 +19,7 @@ public class CustomStore implements BookStoreSpecification, Command {
     private static final ArrayList<Integer> soldIDHistory = new ArrayList<>();
     private static boolean proceedToPurchase = false;
     private static int itemType = 0;
+    private Account account;
     public CustomStore() throws FileNotFoundException {
         if(unlockStore())
         {
@@ -93,11 +92,13 @@ public class CustomStore implements BookStoreSpecification, Command {
     @Override
     public void makePurchaseCommand() throws FileNotFoundException {
         int customerCount = theManager.getLineCount();
-        int customerID = 0;
+        int currentCustomerID = 0;
         while(customerCount > 0)
         {
-            System.out.println(theManager.registrar.customerDetails(customerID));
-            if(Registrar.customerLog.get(customerID).isPremium() && Registrar.customerLog.get(customerID) != null)
+            System.out.println(theManager.registrar.customerDetails(currentCustomerID));
+            String currentCustomer = theManager.registrar.getCustomerNameByID(currentCustomerID);
+            account = new Account(currentCustomer, currentCustomerID);
+            if(Registrar.customerLog.get(currentCustomerID).isPremium() && Registrar.customerLog.get(currentCustomerID) != null)
             {
                 theManager.membershipDueDate();
             }
@@ -106,12 +107,12 @@ public class CustomStore implements BookStoreSpecification, Command {
             {
                 getMenuCommand();
                 itemMenu();
-                System.out.println("Wallet: $" + getCustomerWallets().get(customerID));
+                System.out.println("Wallet: $" + getCustomerWallets().get(currentCustomerID));
                 int purchaseOption = scanner.nextInt();
                 if(purchaseOption == 1 || purchaseOption == 2 || purchaseOption == 3)
                 {
                     crate.openCrate(purchaseOption);
-                    System.out.println("Wallet: $" + getCustomerWallets().get(customerID));
+                    System.out.println("Wallet: $" + getCustomerWallets().get(currentCustomerID));
                     System.out.println("Purchase the desired item by its associated ID: ");
                     int desiredItem;
                     try{
@@ -130,9 +131,9 @@ public class CustomStore implements BookStoreSpecification, Command {
                         break;
                     }
                     soldIDHistory.add(desiredItem);
-                    if(!(crate.retrieveSpecifiedItem(desiredItem).getItemPrice() > getCustomerWallets().get(customerID)))
+                    if(!(crate.retrieveSpecifiedItem(desiredItem).getItemPrice() > getCustomerWallets().get(currentCustomerID)))
                     {
-                        getCustomerWallets().set(customerID, (float) (getCustomerWallets().get(customerID)-crate.retrieveSpecifiedItem(desiredItem).getItemPrice()));
+                        getCustomerWallets().set(currentCustomerID, (float) (getCustomerWallets().get(currentCustomerID)-crate.retrieveSpecifiedItem(desiredItem).getItemPrice()));
                         cart = new Cart(crate.retrieveSpecifiedItem(desiredItem), null);
                         bagItem(crate.retrieveSpecifiedItem(desiredItem));
                     }
@@ -157,13 +158,14 @@ public class CustomStore implements BookStoreSpecification, Command {
                 }
 
             }
-            customerID++;
+            currentCustomerID++;
             customerCount--;
         }
 
     }
     @Override
     public void completeOrderCommand(Cart cart) throws FileNotFoundException {
+        System.out.println("\n\tReceipt: ");
         cart.orderHistory();
         System.out.println("Would you like to purchase the following items you added to your cart? (y/n)");
         String completeOrRefund = "";
@@ -175,12 +177,8 @@ public class CustomStore implements BookStoreSpecification, Command {
         }
         if(completeOrRefund.equalsIgnoreCase("y"))
         {
+            addToLedger(account);
             System.out.println("Your total is: $" + cart.cartTotal());
-            System.out.println("\n-------------------------------------------------------");
-            System.out.println("Receipt");
-            cart.orderHistory();
-            System.out.println("-------------------------------------------------------\n");
-            createReceipt();
             cart.clearCart();
         }
         else if(completeOrRefund.equalsIgnoreCase("n"))
@@ -458,20 +456,30 @@ public class CustomStore implements BookStoreSpecification, Command {
         return customerWallets;
     }
 
-    public void createReceipt() throws FileNotFoundException {
-        File receipt = new File("order.csv");
-        PrintWriter out = new PrintWriter(receipt);
+    public void addToLedger(Account account) {
+        String receipt = "src/Store/ledger.csv";
+        BufferedWriter out = null;
         try {
-            for (Integer integer : soldIDHistory) {
-                out.println("-----------------------");
-                out.println("Name: " + cart.getSoldItemName(integer));
-                out.println("Price: " + cart.getItemPrice(integer));
-                out.println("-----------------------");
+            out = new BufferedWriter(new FileWriter((receipt),true));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            out.write("**********************************\n");
+            out.write("Customer Name: " + account.getName() + "\n");
+            out.write("Customer ID: " + account.getID() + "\n");
+            for(int i = 0; i < account.customerOrderHistory.size(); i++)
+            {
+                out.write("---------------------------------\n");
+                out.write("Item Name: " + cart.getSoldItemName(i) + "\n");
+                out.write("Item Price: $" + cart.getItemPrice(i) + "\n");
+                out.write("Date: " + java.time.LocalDate.now() + "\n");
+                out.write("---------------------------------\n");
             }
+            out.write("**********************************\n");
             out.close();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
-
 }

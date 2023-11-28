@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class DefaultCrate
 {
-    private  ArrayList<Item> defaultItemHistory = new ArrayList<>();
+    private ArrayList<Item> defaultItemHistory = new ArrayList<>();
     private CDBuilder cdBuilder = new CDBuilder();
     private DVDBuilder dvdBuilder = new DVDBuilder();
     private BookBuilder bookBuilder = new BookBuilder();
@@ -99,6 +99,13 @@ public class DefaultCrate
 
             }
         }
+    }
+    // TODO Finish restock function
+    public void addToItemList(int itemType)
+    {
+        System.out.println("Name of item? ");
+        System.out.println("Price of item? ");
+        System.out.println("Length of item? ");
     }
     public void displayMenu(int itemType)
     {

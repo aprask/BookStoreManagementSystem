@@ -6,7 +6,6 @@ public class Cart
 {
     private Order order;
     protected static ArrayList<Order> orderHistory = new ArrayList<>();
-    protected static ArrayList<Integer> orderAmountHistory = new ArrayList<>();
     private String name;
     public Cart(Item item, String name)
     {
@@ -14,9 +13,8 @@ public class Cart
         orderHistory.add(order);
         this.name = name;
     }
-    public int getCartAmount()
-    {
-        return orderAmountHistory.size();
+    public int orderAmount() {
+        return Cart.orderHistory.size();
     }
     public double cartTotal()
     {
@@ -38,15 +36,13 @@ public class Cart
     }
     public void orderHistory()
     {
-        int amount = 0;
-        for (Order value : orderHistory) {
+        for (int i = 0; i < orderHistory.size(); i++) {
             System.out.println("****************************************");
-            System.out.println("Name: " + value.getItem().getItemName());
-            System.out.println("Price: $" + value.getItem().getItemPrice());
+            System.out.println("Name: " + orderHistory.get(i).getItem().getItemName());
+            System.out.println("Price: $" + orderHistory.get(i).getItem().getItemPrice());
+            System.out.println("Purchase ID: " + i);
             System.out.println("****************************************");
-            amount++;
         }
-        orderAmountHistory.add(amount);
     }
     public String getSoldItemName(int ID)
     {
