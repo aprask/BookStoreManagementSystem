@@ -133,7 +133,7 @@ public class CustomStore implements BookStoreSpecification, Command {
                     if(!(crate.retrieveSpecifiedItem(desiredItem).getItemPrice() > getCustomerWallets().get(customerID)))
                     {
                         getCustomerWallets().set(customerID, (float) (getCustomerWallets().get(customerID)-crate.retrieveSpecifiedItem(desiredItem).getItemPrice()));
-                        cart = new Cart(crate.retrieveSpecifiedItem(desiredItem));
+                        cart = new Cart(crate.retrieveSpecifiedItem(desiredItem), null);
                         bagItem(crate.retrieveSpecifiedItem(desiredItem));
                     }
                     else
