@@ -44,14 +44,6 @@ public class StandardStore implements BookStoreSpecification, Command {
         }
     }
     @Override
-    public void restockProduct(int itemType, int amount) {
-        while(amount > 0){
-            defaultCrate.addToItemList(itemType);
-            amount--;
-        }
-    }
-
-    @Override
     public double inventoryValue() {
         return this.defaultCrate.valueOfCrate();
     }
@@ -89,7 +81,6 @@ public class StandardStore implements BookStoreSpecification, Command {
                         int desiredItem;
                         try{
                             desiredItem = scanner.nextInt();
-                            account.addToOrderHistory(desiredItem);
                         } catch(InputMismatchException e)
                         {
                             System.out.println("You need to enter a number");
@@ -103,9 +94,10 @@ public class StandardStore implements BookStoreSpecification, Command {
                             System.out.println("Error: " + e);
                             break;
                         }
-                        soldIDHistory.add(desiredItem);
                         if(!(defaultCrate.retrieveSpecifiedItem(desiredItem).getItemPrice() > getCustomerWallets().get(currentCustomerID)))
                         {
+                            soldIDHistory.add(desiredItem);
+                            account.addToOrderHistory(desiredItem);
                             getCustomerWallets().set(currentCustomerID, (float) (getCustomerWallets().get(currentCustomerID)-defaultCrate.retrieveSpecifiedItem(desiredItem).getItemPrice()));
                             cart = new Cart(defaultCrate.retrieveSpecifiedItem(desiredItem), currentCustomer);
                             bagItem(defaultCrate.retrieveSpecifiedItem(desiredItem));
@@ -113,7 +105,6 @@ public class StandardStore implements BookStoreSpecification, Command {
                         else
                         {
                             System.out.println("Insufficient Funds...");
-                            break;
                         }
                     }
                     else if(purchaseOption == 4)
@@ -443,11 +434,12 @@ public class StandardStore implements BookStoreSpecification, Command {
         System.out.println("\nWould you like to restock the inventory for the next order? ");
         System.out.println("\t\"1\" = Yes, \"2\" = No");
         int restockOption = scanner.nextInt();
+        scanner.nextLine();
         if(restockOption == 1)
         {
+            cart.displaySoldItems();
             while(true)
             {
-                cart.displaySoldItems();
                 if(Cart.orderHistory.size() == 0)
                 {
                     cart.clearCart();
@@ -481,10 +473,3 @@ public class StandardStore implements BookStoreSpecification, Command {
         }
     }
 }
-/*
-TODO
-    2) Refine Restock Procedure
-    3) Finish Try/Catch Blocks
-    4) Add additional feature
-    5) Fix Custom Store
- */
