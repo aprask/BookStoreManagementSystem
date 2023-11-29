@@ -94,7 +94,29 @@ public class Cart
     public void setName(String name) {
         this.name = name;
     }
-
+    public void displaySoldItems()
+    {
+        for(int i = 0; i < orderHistory.size(); i++)
+        {
+            System.out.println("******************************");
+            System.out.println("Name: " + orderHistory.get(i).getItem().getItemName());
+            System.out.println("Price: $" + orderHistory.get(i).getItem().getItemPrice());
+            System.out.println("Sold ID: " + i);
+            System.out.println("******************************");
+        }
+    }
+    public boolean restockItem(String name)
+    {
+        for(int i = 0; i < orderHistory.size(); i++)
+        {
+            if(name.equals(orderHistory.get(i).getItem().getItemName()))
+            {
+                orderHistory.remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
     private static class Order {
         private Item item;
         public Order(Item item)

@@ -263,20 +263,9 @@ public class CustomStore implements BookStoreSpecification, Command {
         {
             System.out.println("Error: " + e);
         }
-        if(item1ID > crate.getBuildHistory().size() || item2ID > crate.getBuildHistory().size())
-        {
-            if(!crate.getBuildHistory().get(item1ID).getCatalog().get(item1ID).isStatus() ||
-                    !crate.getBuildHistory().get(item1ID).getCatalog().get(item2ID).isStatus())
-            {
-                crate.compareItemsInCrate(item1ID,item2ID);
-                System.out.println();
-            }
-            else
-            {
-                System.out.println("Error. Invalid ID(s)");
-                System.out.println();
-            }
-        }
+        System.out.println();
+        crate.compareItemsInCrate(item1ID,item2ID);
+        System.out.println();
     }
     @Override
     public void removeItemCommand(int itemID) {

@@ -190,6 +190,16 @@ public class DefaultCrate
         }
         return null;
     }
+    public Item retrieveSpecifiedItem(String name)
+    {
+        for(int i = 0; i < defaultItemHistory.size(); i++){
+            if(defaultItemHistory.get(i).getItemName().equals(name) && defaultItemHistory.get(i) != null)
+            {
+                return defaultItemHistory.get(i);
+            }
+        }
+        return null;
+    }
     public double valueOfCrate()
     {
         int total = 0;

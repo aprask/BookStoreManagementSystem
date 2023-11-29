@@ -151,7 +151,7 @@ public class StandardStore implements BookStoreSpecification, Command {
         {
             addToLedger(account);
             System.out.println("Your total is: $" + cart.cartTotal());
-            cart.clearCart();
+            postStore();
         }
         else if(completeOrRefund.equalsIgnoreCase("n"))
         {
@@ -203,6 +203,7 @@ public class StandardStore implements BookStoreSpecification, Command {
                 }
                 removeItemCommand(itemByID);
             }
+            postStore();
         }
     }
 
@@ -237,20 +238,9 @@ public class StandardStore implements BookStoreSpecification, Command {
         {
             System.out.println("Error: " + e);
         }
-        if(item1ID > defaultCrate.getDefaultItemHistory().size() || item2ID > defaultCrate.getDefaultItemHistory().size())
-        {
-            if(!defaultCrate.getDefaultItemHistory().get(item1ID).isStatus() ||
-                    !defaultCrate.getDefaultItemHistory().get(item2ID).isStatus())
-            {
-                defaultCrate.compareItemsInCrate(item1ID,item2ID);
-                System.out.println();
-            }
-            else
-            {
-                System.out.println("Error. Invalid ID(s)");
-                System.out.println();
-            }
-        }
+        System.out.println();
+        defaultCrate.compareItemsInCrate(item1ID,item2ID);
+        System.out.println();
     }
 
     @Override
@@ -448,10 +438,53 @@ public class StandardStore implements BookStoreSpecification, Command {
             throw new RuntimeException(e);
         }
     }
+    public void postStore()
+    {
+        System.out.println("\nWould you like to restock the inventory for the next order? ");
+        System.out.println("\t\"1\" = Yes, \"2\" = No");
+        int restockOption = scanner.nextInt();
+        if(restockOption == 1)
+        {
+            while(true)
+            {
+                cart.displaySoldItems();
+                if(Cart.orderHistory.size() == 0)
+                {
+                    cart.clearCart();
+                    break;
+                }
+                System.out.println("Select an item by its name to restock (-1 = Exit)");
+                String selectByName = scanner.nextLine();
+                if(selectByName.equals("-1"))
+                {
+                    System.out.println("Bye");
+                    break;
+                }
+                else
+                {
+                    if(cart.restockItem(selectByName))
+                    {
+                        defaultCrate.retrieveSpecifiedItem(selectByName).setItemStatus(false);
+                        System.out.println("Restock Successful");
+                    }
+                    else
+                    {
+                        System.out.println("Name DNE");
+                    }
+                }
+            }
+            cart.clearCart();
+        }
+        else
+        {
+            cart.clearCart();
+        }
+    }
 }
 /*
 TODO
     2) Refine Restock Procedure
     3) Finish Try/Catch Blocks
     4) Add additional feature
+    5) Fix Custom Store
  */
