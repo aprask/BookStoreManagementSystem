@@ -1,19 +1,15 @@
 package Main;
 
+import Main.Misc.Exit;
 import Store.StandardStore;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class StandardDriver
 {
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws IOException {
         StandardStore standardStore = new StandardStore();
-        System.exit(0);
+        Exit exit = new Exit();
+        exit.exitProgram();
     }
 }
-
-/*
-TODO
-    Thursday --> Make JavaDoc + Refine Custom Store (match it to standard store)
-    Friday --> Finish Try/Catch Blocks + Write UML/Project Details + Submit
- */

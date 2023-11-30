@@ -3,6 +3,7 @@ package Store;
 import Administrator.Manager;
 import Administrator.Registrar;
 import Administrator.Security.Admin;
+import Administrator.Security.NameException;
 import Bank.Vault;
 import Factory.Custom.CustomCrate;
 import Factory.Item;
@@ -178,7 +179,11 @@ public class CustomStore implements BookStoreSpecification, Command {
         }
         if(completeOrRefund.equalsIgnoreCase("y"))
         {
-            addToLedger(account);
+            try {
+                addToLedger(account);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             System.out.println("Your total is: $" + cart.cartTotal());
             postStore();
         }
@@ -481,8 +486,9 @@ public class CustomStore implements BookStoreSpecification, Command {
      *
      * @param account after each purchase, add the order to the .csv ledger file
      */
-    public void addToLedger(Account account) {
+    public void addToLedger(Account account) throws IOException {
         String receipt = "src/Store/ledger.csv";
+        FileWriter writer = new FileWriter("src/Main/Misc/sales_report.html", true);
         BufferedWriter out;
         try {
             out = new BufferedWriter(new FileWriter((receipt),true));
@@ -490,19 +496,28 @@ public class CustomStore implements BookStoreSpecification, Command {
             throw new RuntimeException(e);
         }
         try {
+            // to the CSV file
             out.write("**********************************\n");
             out.write("Customer Name: " + account.getName() + "\n");
             out.write("Customer ID: " + account.getID() + "\n");
             for(int i = 0; i < account.customerOrderHistory.size(); i++)
             {
+                // to the CSV file
                 out.write("---------------------------------\n");
                 out.write("Item Name: " + cart.getSoldItemName(i) + "\n");
                 out.write("Item Price: $" + cart.getItemPrice(i) + "\n");
                 out.write("Date: " + java.time.LocalDate.now() + "\n");
                 out.write("---------------------------------\n");
+
+                // to the HTML file
+                writer.write("<p>Date: " + java.time.LocalDate.now() + ": </p>\n");
+                writer.write("<p>Name: " + cart.getSoldItemName(i) + "</p>\n");
+                writer.write("<p>Price: $" + cart.getItemPrice(i) + "</p>\n");
+                writer.write("<hr />\n");
             }
             out.write("**********************************\n");
             out.close();
+            writer.close();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -511,7 +526,14 @@ public class CustomStore implements BookStoreSpecification, Command {
     {
         System.out.println("\nWould you like to restock the inventory for the next order? ");
         System.out.println("\t\"1\" = Yes, \"2\" = No");
-        int restockOption = scanner.nextInt();
+        int restockOption = 0;
+        try{
+            restockOption = scanner.nextInt();
+        } catch(Exception e)
+        {
+            System.out.println("Error: " + e);
+        }
+        scanner.nextLine();
         if(restockOption == 1)
         {
             while(true)
@@ -522,9 +544,17 @@ public class CustomStore implements BookStoreSpecification, Command {
                     cart.clearCart();
                     break;
                 }
-                System.out.println("Select an item by its name to restock (-1 = Exit)");
+                System.out.println("Select an item by its << NAME >> to restock (\"exit\" = Exit)");
                 String selectByName = scanner.nextLine();
-                if(selectByName.equals("-1"))
+                try{
+                    checkProductName(selectByName);
+                } catch (NameException e) {
+                    throw new RuntimeException(e);
+                } catch (Exception e)
+                {
+                    System.out.println("Error: " + e);
+                }
+                if(selectByName.equalsIgnoreCase("exit"))
                 {
                     System.out.println("Bye");
                     break;
@@ -547,6 +577,16 @@ public class CustomStore implements BookStoreSpecification, Command {
         else
         {
             cart.clearCart();
+        }
+    }
+    public static void checkProductName(String name) throws NameException
+    {
+        for(char c: name.toCharArray())
+        {
+            if(Character.isDigit(c))
+            {
+                throw new NameException("\nProduct names cannot contain digits.");
+            }
         }
     }
 }

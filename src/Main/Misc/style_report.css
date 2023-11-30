@@ -1,0 +1,22 @@
+body {
+    font-family: Arial;
+    text-align: center;
+    background-color: white;
+}
+
+h1 {
+    color: green;
+    font-size: 36px;
+    margin-top: 50px;
+}
+h3 {
+    color: red
+}
+
+#closeButton {
+    background-color: blue;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}

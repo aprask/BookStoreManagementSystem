@@ -16,6 +16,7 @@ public class Admin implements Operator {
     @Override
     public boolean didPass()
     {
+        System.out.printf("hint: \"%s\"\n\n", ADMIN_PASSWORD);
         int attempts = 5;
         while (attempts > 0) {
             System.out.println("Enter password:");
