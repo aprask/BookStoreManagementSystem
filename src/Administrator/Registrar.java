@@ -8,10 +8,21 @@ public class Registrar
     {
 
     }
+
+    /**
+     *
+     * @param customer a customer object passed into the method to add to the customer log history
+     */
     public void addCustomerToLog(Customer customer)
     {
         customerLog.add(customer);
     }
+
+    /**
+     *
+     * @param ID given an ID
+     * @return return a set of details relevant to the customer
+     */
     public String customerDetails(int ID)
     {
         if(customerLog.get(ID).isPremium() && customerLog.get(ID) != null)
@@ -28,6 +39,12 @@ public class Registrar
         }
         else return null;
     }
+
+    /**
+     *
+     * @param ID given an ID
+     * @return return the customer's name by the ID
+     */
     public String getCustomerNameByID(int ID){
         return customerLog.get(ID).getName();
     }

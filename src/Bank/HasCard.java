@@ -2,6 +2,11 @@ package Bank;
 
 public class HasCard implements BankState{
     Vault vault;
+
+    /**
+     *
+     * @param newVault given a vault object
+     */
     public HasCard(Vault newVault)
     {
         vault = newVault;
@@ -19,6 +24,10 @@ public class HasCard implements BankState{
         vault.changeVaultState(vault.noCard());
     }
 
+    /**
+     *
+     * @param pin retrieve a pin
+     */
     @Override
     public void insertPin(String pin) {
         if(pin.length() != 4)
@@ -36,6 +45,10 @@ public class HasCard implements BankState{
         }
     }
 
+    /**
+     *
+     * @param withdrawAmount retrieve an amount to take out of the bank
+     */
     @Override
     public void withdraw(int withdrawAmount) {
         System.out.println("TYPE IN PIN FIRST ");

@@ -7,7 +7,7 @@ import java.util.*;
 public class Salesman implements Pitch {
     private final Scanner scanner = new Scanner(System.in);
     protected static int amountOfCustomers;
-    private final String[] paymentMethods = {"AMX", "Mastercard", "Discover", "Visa"};
+    private final String[] PAYMENT_METHODS = {"AMX", "Mastercard", "Discover", "Visa"};
     private static String memberType;
     private static String memberName;
     private static int memberAge;
@@ -33,6 +33,11 @@ public class Salesman implements Pitch {
         }
         return amountOfCustomers;
     }
+
+    /**
+     *
+     * @return return a name
+     */
     @Override
     public String askForName() {
         System.out.println("What is your name? ");
@@ -47,6 +52,11 @@ public class Salesman implements Pitch {
         }
         return memberName;
     }
+
+    /**
+     *
+     * @return return an age
+     */
     @Override
     public int askForAge() {
         System.out.println("Age? ");
@@ -62,6 +72,11 @@ public class Salesman implements Pitch {
         }
         return memberAge;
     }
+
+    /**
+     *
+     * @return return a payment type
+     */
     @Override
     public String askForPaymentType() {
         do {
@@ -70,21 +85,26 @@ public class Salesman implements Pitch {
             String selectPaymentType = scanner.next();
             switch (selectPaymentType) {
                 case "1" -> {
-                    return this.paymentMethods[0];
+                    return this.PAYMENT_METHODS[0];
                 }
                 case "2" -> {
-                    return this.paymentMethods[1];
+                    return this.PAYMENT_METHODS[1];
                 }
                 case "3" -> {
-                    return this.paymentMethods[2];
+                    return this.PAYMENT_METHODS[2];
                 }
                 case "4" -> {
-                    return this.paymentMethods[3];
+                    return this.PAYMENT_METHODS[3];
                 }
                 default -> System.out.println("Error");
             }
         } while (true);
     }
+
+    /**
+     *
+     * @return return a y/n based on the premium status
+     */
     @Override
     public String askForPremium() {
         System.out.println("Would you like premium membership (y/n)? ");
@@ -122,6 +142,12 @@ public class Salesman implements Pitch {
         }
         System.out.println("\n");
     }
+
+    /**
+     *
+     * @param age given an age
+     * @throws AgeException determine whether it is less than 16
+     */
     public static void checkCustomerAge(int age) throws AgeException{
         if(age < 16)
         {
@@ -129,6 +155,12 @@ public class Salesman implements Pitch {
             throw new AgeException("\nYou must be 16 to purchase at this store.\n...We will assume you are 16");
         }
     }
+
+    /**
+     *
+     * @param name given a name
+     * @throws NameException determine if it contains digits
+     */
     public static void checkCustomerName(String name) throws NameException{
         for(char c: name.toCharArray())
         {
@@ -139,6 +171,12 @@ public class Salesman implements Pitch {
             }
         }
     }
+
+    /**
+     *
+     * @param type given a membership y/n
+     * @throws MembershipTypeException determine if the membership is a VALID option (something other than y/n)
+     */
     public static void checkMembershipType(String type) throws MembershipTypeException{
         if(type.equalsIgnoreCase("y") || type.equalsIgnoreCase("n"))
         {

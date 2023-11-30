@@ -1,4 +1,9 @@
-package Factory;
+package Factory.Standard;
+
+import Factory.*;
+import Factory.Custom.BookBuilder;
+import Factory.Custom.CDBuilder;
+import Factory.Custom.DVDBuilder;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -6,21 +11,18 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class DefaultCrate
+public class DefaultCrate implements Crate
 {
-    private ArrayList<Item> defaultItemHistory = new ArrayList<>();
-    private CDBuilder cdBuilder = new CDBuilder();
-    private DVDBuilder dvdBuilder = new DVDBuilder();
-    private BookBuilder bookBuilder = new BookBuilder();
-    protected final String pathToDefBooks = "src/Factory/default_books.csv";
-    protected final String pathToDefCDs = "src/Factory/default_cds.csv";
-    protected final String pathToDefDVDs = "src/Factory/default_dvds.csv";
+    private final ArrayList<Item> defaultItemHistory = new ArrayList<>();
+    protected final String PATH_BOOKS = "src/Factory/default_books.csv";
+    protected final String PATH_CDS = "src/Factory/default_cds.csv";
+    protected final String PATH_DVDS = "src/Factory/default_dvds.csv";
     protected String line = "";
     public DefaultCrate() {
         BufferedReader bufferedReader;
         {
             try {
-                bufferedReader = new BufferedReader(new FileReader(pathToDefBooks));
+                bufferedReader = new BufferedReader(new FileReader(PATH_BOOKS));
                 while((line = bufferedReader.readLine()) != null)
                 {
                     String[] strings = line.split(",");
@@ -28,6 +30,7 @@ public class DefaultCrate
                     double price = Double.parseDouble(strings[1]);
                     String genre = strings[2];
                     double size = Double.parseDouble(strings[3]);
+                    BookBuilder bookBuilder = new BookBuilder();
                     defaultItemHistory.add(bookBuilder.buildBook(name,price,genre,(int) size));
                 }
             } catch (FileNotFoundException e) {
@@ -38,7 +41,7 @@ public class DefaultCrate
         }
         {
             try {
-                bufferedReader = new BufferedReader(new FileReader(pathToDefCDs));
+                bufferedReader = new BufferedReader(new FileReader(PATH_CDS));
                 while((line = bufferedReader.readLine()) != null)
                 {
                     String[] strings = line.split(",");
@@ -46,6 +49,7 @@ public class DefaultCrate
                     double price = Double.parseDouble(strings[1]);
                     String genre = strings[2];
                     double size = Double.parseDouble(strings[3]);
+                    CDBuilder cdBuilder = new CDBuilder();
                     defaultItemHistory.add(cdBuilder.buildCD(name,price,genre,(int) size));
                 }
             } catch (FileNotFoundException e) {
@@ -56,7 +60,7 @@ public class DefaultCrate
         }
         {
             try {
-                bufferedReader = new BufferedReader(new FileReader(pathToDefDVDs));
+                bufferedReader = new BufferedReader(new FileReader(PATH_DVDS));
                 while((line = bufferedReader.readLine()) != null)
                 {
                     String[] strings = line.split(",");
@@ -64,6 +68,7 @@ public class DefaultCrate
                     double price = Double.parseDouble(strings[1]);
                     String genre = strings[2];
                     double size = Double.parseDouble(strings[3]);
+                    DVDBuilder dvdBuilder = new DVDBuilder();
                     defaultItemHistory.add(dvdBuilder.buildDVD(name,price,genre,(int) size));
                 }
             } catch (FileNotFoundException e) {
@@ -73,7 +78,8 @@ public class DefaultCrate
             }
         }
     }
-    public void displayMenu()
+    @Override
+    public void openCrate()
     {
         for(int i = 0; i < defaultItemHistory.size(); i++)
         {
@@ -100,14 +106,13 @@ public class DefaultCrate
             }
         }
     }
-    // TODO Finish restock function
-    public void addToItemList(int itemType)
-    {
-        System.out.println("Name of item? ");
-        System.out.println("Price of item? ");
-        System.out.println("Length of item? ");
-    }
-    public void displayMenu(int itemType)
+
+    /**
+     *
+     * @param itemType show specific item type menu given the item type ID
+     */
+    @Override
+    public void openCrate(int itemType)
     {
         for(int i = 0; i < defaultItemHistory.size(); i++)
         {
@@ -152,7 +157,7 @@ public class DefaultCrate
             }
         }
     }
-
+    @Override
     public void compareItemsInCrate(int item1ID, int item2ID)
     {
         for (int i = 0; i < this.defaultItemHistory.size(); i++) {
@@ -180,6 +185,7 @@ public class DefaultCrate
             }
         }
     }
+    @Override
     public Item retrieveSpecifiedItem(int itemID)
     {
         for(int i = 0; i < defaultItemHistory.size(); i++){
@@ -190,16 +196,20 @@ public class DefaultCrate
         }
         return null;
     }
+    @Override
     public Item retrieveSpecifiedItem(String name)
     {
-        for(int i = 0; i < defaultItemHistory.size(); i++){
+        int i = 0;
+        while (i < defaultItemHistory.size()) {
             if(defaultItemHistory.get(i).getItemName().equals(name) && defaultItemHistory.get(i) != null)
             {
                 return defaultItemHistory.get(i);
             }
+            i++;
         }
         return null;
     }
+    @Override
     public double valueOfCrate()
     {
         int total = 0;
@@ -209,40 +219,5 @@ public class DefaultCrate
             }
         }
         return total;
-    }
-    public int sizeOfFactory()
-    {
-        return defaultItemHistory.size();
-    }
-    public ArrayList<Item> getDefaultItemHistory() {
-        return this.defaultItemHistory;
-    }
-
-    public  void setDefaultItemHistory(ArrayList<Item> defaultItemHistory) {
-        this.defaultItemHistory = defaultItemHistory;
-    }
-
-    public BookBuilder getBookBuilder() {
-        return bookBuilder;
-    }
-
-    public void setBookBuilder(BookBuilder bookBuilder) {
-        this.bookBuilder = bookBuilder;
-    }
-
-    public DVDBuilder getDvdBuilder() {
-        return dvdBuilder;
-    }
-
-    public void setDvdBuilder(DVDBuilder dvdBuilder) {
-        this.dvdBuilder = dvdBuilder;
-    }
-
-    public CDBuilder getCdBuilder() {
-        return cdBuilder;
-    }
-
-    public void setCdBuilder(CDBuilder cdBuilder) {
-        this.cdBuilder = cdBuilder;
     }
 }

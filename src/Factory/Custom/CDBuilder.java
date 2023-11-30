@@ -1,18 +1,21 @@
-package Factory;
+package Factory.Custom;
+
+import Factory.CD;
+import Factory.ItemBuilder;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class DVDBuilder implements ItemBuilder {
-    private DVD dvd;
-    private Scanner scanner = new Scanner(System.in);
-    public DVDBuilder()
+public class CDBuilder implements ItemBuilder {
+    private final CD cd;
+    private final Scanner scanner = new Scanner(System.in);
+    public CDBuilder()
     {
-        this.dvd = new DVD();
+        this.cd = new CD();
     }
     @Override
     public void buildItemType() {
-        System.out.println("What genre is this DVD? ");
+        System.out.println("What genre is this CD? ");
         String genre = "";
         try{
             genre = scanner.next();
@@ -20,22 +23,21 @@ public class DVDBuilder implements ItemBuilder {
         {
             System.out.println("Error: " + e);
         }
-        this.dvd.setItemType(genre);
+        this.cd.setItemType(genre);
     }
-
     @Override
     public void buildItemName() {
-        System.out.println("What is the name of the DVD? ");
-        String name = "";
+        System.out.println("What is the name of the CD? ");
+        String name;
         try{
             name = scanner.next();
         } catch (Exception e)
         {
             System.out.println("Error: " + e);
-            System.out.println("We will call this dvd \"default_dvd\"");
-            name = "default_dvd";
+            System.out.println("This book will be called \"default_cd\"");
+            name = "default_cd";
         }
-        this.dvd.setItemName(name);
+        this.cd.setItemName(name);
     }
     @Override
     public void buildItemPrice() {
@@ -55,11 +57,11 @@ public class DVDBuilder implements ItemBuilder {
             price = 0;
         }
         scanner.nextLine();
-        this.dvd.setItemPrice(price);
+        this.cd.setItemPrice(price);
     }
     @Override
     public void buildItemSize() {
-        System.out.println("How many seconds in the DVD? ");
+        System.out.println("How many seconds in the CD? ");
         int size;
         try{
             size = scanner.nextInt();
@@ -69,33 +71,31 @@ public class DVDBuilder implements ItemBuilder {
             System.out.println("We will say that the second count is 1");
             size = 1;
         }
-        this.dvd.setItemSize(size);
+        this.cd.setItemSize(size);
     }
-    public DVD buildDVD()
+
+    /**
+     *
+     * @return build a CD
+     */
+    public CD buildCD()
     {
         buildItemName();
         buildItemPrice();
         buildItemType();
         buildItemSize();
-        return new DVD(this.dvd.getItemName(), this.dvd.getItemPrice(), this.dvd.getItemType(), this.dvd.getSize());
+        return new CD(this.cd.getItemName(), this.cd.getItemPrice(), this.cd.getItemType(), this.cd.getSize());
     }
-    public DVD buildDVD(String name, double price, String itemType, int size)
+    /**
+     *
+     * @param name a cd name (Alternate)
+     * @param price a cd price (Alternate)
+     * @param itemType a cd genre (Alternate)
+     * @param size a cd length (Alternate)
+     * @return return a CD object
+     */
+    public CD buildCD(String name, double price, String itemType, int size)
     {
-        return new DVD(name,price,itemType,size);
-    }
-    public Scanner getScanner() {
-        return scanner;
-    }
-
-    public void setScanner(Scanner scanner) {
-        this.scanner = scanner;
-    }
-
-    public DVD getDvd() {
-        return dvd;
-    }
-
-    public void setDvd(DVD dvd) {
-        this.dvd = dvd;
+        return new CD(name,price,itemType,size);
     }
 }

@@ -1,14 +1,16 @@
-package Factory;
+package Factory.Custom;
+import Factory.Book;
+import Factory.ItemBuilder;
+
 import java.util.*;
 public class BookBuilder implements ItemBuilder
 {
-    private Book book;
-    private Scanner scanner = new Scanner(System.in);
+    private final Book book;
+    private final Scanner scanner = new Scanner(System.in);
     public BookBuilder()
     {
         this.book = new Book();
     }
-
     @Override
     public void buildItemType() {
         System.out.println("What genre is this book? ");
@@ -71,6 +73,11 @@ public class BookBuilder implements ItemBuilder
         }
         this.book.setItemSize(size);
     }
+
+    /**
+     *
+     * @return build a book
+     */
     public Book buildBook()
     {
         buildItemName();
@@ -79,23 +86,17 @@ public class BookBuilder implements ItemBuilder
         buildItemSize();
         return new Book(this.book.getItemName(), this.book.getItemPrice(), this.book.getItemType(), this.book.getSize());
     }
+
+    /**
+     *
+     * @param name a book name (Alternate)
+     * @param price a book price (Alternate)
+     * @param itemType a book genre (Alternate)
+     * @param size a book length (Alternate)
+     * @return return a Book object
+     */
     public Book buildBook(String name, double price, String itemType, int size)
     {
         return new Book(name,price,itemType,size);
-    }
-    public Book getBook() {
-        return book;
-    }
-
-    public void setBook(Book book) {
-        this.book = book;
-    }
-
-    public Scanner getScanner() {
-        return scanner;
-    }
-
-    public void setScanner(Scanner scanner) {
-        this.scanner = scanner;
     }
 }

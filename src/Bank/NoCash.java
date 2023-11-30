@@ -2,6 +2,10 @@ package Bank;
 
 public class NoCash implements BankState {
     Vault vault;
+    /**
+     *
+     * @param newVault given a vault object
+     */
     public NoCash(Vault newVault)
     {
         vault = newVault;
@@ -18,11 +22,19 @@ public class NoCash implements BankState {
         System.out.println("No Card");
     }
 
+    /**
+     *
+     * @param pin retrieve a pin
+     */
     @Override
     public void insertPin(String pin) {
         System.out.println("No Money");
     }
 
+    /**
+     *
+     * @param withdrawAmount retrieve an amount to take out of the bank
+     */
     @Override
     public void withdraw(int withdrawAmount) {
         System.out.println("No Money");

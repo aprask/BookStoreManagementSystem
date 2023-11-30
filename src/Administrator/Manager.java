@@ -31,10 +31,18 @@ public class Manager {
         this.salesman.membershipDueDate();
     }
 
+    /**
+     *
+     * @return return the total amount of customers in the line
+     */
     public int getLineCount() {
         return lineCount;
     }
 
+    /**
+     *
+     * @param lineCount refers to the changed line count by the setter
+     */
     public void setLineCount(int lineCount) {
         this.lineCount = lineCount;
     }

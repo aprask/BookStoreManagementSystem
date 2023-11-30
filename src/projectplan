@@ -1,2 +1,0 @@
-1. Fix Membership Exception (refactor to ints (1 and 2) not string
-2. Fix csv file (why is null appearing)

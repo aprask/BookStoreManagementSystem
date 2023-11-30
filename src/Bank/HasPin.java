@@ -2,6 +2,11 @@ package Bank;
 
 public class HasPin implements BankState {
     Vault vault;
+
+    /**
+     *
+     * @param newVault given a vault object
+     */
     public HasPin(Vault newVault)
     {
         vault = newVault;
@@ -18,11 +23,20 @@ public class HasPin implements BankState {
         System.out.println("Card Ejected!");
         vault.changeVaultState(vault.noCard());
     }
+
+    /**
+     *
+     * @param pin retrieve a pin
+     */
     @Override
     public void insertPin(String pin) {
         System.out.println("Why would you enter multiple pins?");
     }
 
+    /**
+     *
+     * @param withdrawAmount retrieve an amount to take out of the bank
+     */
     @Override
     public void withdraw(int withdrawAmount) {
         if(withdrawAmount > vault.getCashStoredInVault())

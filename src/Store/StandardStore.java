@@ -4,7 +4,7 @@ import Administrator.Manager;
 import Administrator.Registrar;
 import Administrator.Security.Admin;
 import Bank.Vault;
-import Factory.DefaultCrate;
+import Factory.Standard.DefaultCrate;
 import Factory.Item;
 
 import java.io.*;
@@ -19,18 +19,9 @@ public class StandardStore implements BookStoreSpecification, Command {
     private static final Manager theManager = new Manager();
     private static final ArrayList<Integer> soldIDHistory = new ArrayList<>();
     private static boolean proceedToPurchase = false;
-    private static int itemType = 0;
     private Account account;
     public ArrayList<Float> getCustomerWallets() {
         return customerWallets;
-    }
-
-    public static int getItemType() {
-        return itemType;
-    }
-
-    public static void setItemType(int itemType) {
-        StandardStore.itemType = itemType;
     }
     public StandardStore() throws FileNotFoundException {
         if(unlockStore())
@@ -38,11 +29,16 @@ public class StandardStore implements BookStoreSpecification, Command {
             System.out.println("Importing default array of items.");
             System.out.println("Please wait...");
             System.out.println("\nItems:");
-            defaultCrate.displayMenu();
+            defaultCrate.openCrate();
             this.catalogCustomers();
             if(proceedToPurchase) this.makePurchaseCommand();
         }
     }
+
+    /**
+     *
+     * @return return the total of the inventory
+     */
     @Override
     public double inventoryValue() {
         return this.defaultCrate.valueOfCrate();
@@ -50,7 +46,7 @@ public class StandardStore implements BookStoreSpecification, Command {
 
     @Override
     public void getMenuCommand() {
-        defaultCrate.displayMenu();
+        defaultCrate.openCrate();
     }
 
     @Override
@@ -71,12 +67,13 @@ public class StandardStore implements BookStoreSpecification, Command {
                 {
                     getMenuCommand();
                     itemMenu();
-                    System.out.println("Wallet: $" + getCustomerWallets().get(currentCustomerID));
+                    String wallet = "Wallet: $" + getCustomerWallets().get(currentCustomerID);
+                    System.out.println(wallet);
                     int purchaseOption = scanner.nextInt();
                     if(purchaseOption == 1 || purchaseOption == 2 || purchaseOption == 3)
                     {
-                        defaultCrate.displayMenu(purchaseOption);
-                        System.out.println("Wallet: $" + getCustomerWallets().get(currentCustomerID));
+                        defaultCrate.openCrate(purchaseOption);
+                        System.out.println(wallet);
                         System.out.println("Purchase the desired item by its associated ID: ");
                         int desiredItem;
                         try{
@@ -126,6 +123,11 @@ public class StandardStore implements BookStoreSpecification, Command {
                 customerCount--;
             }
         }
+
+    /**
+     *
+     * @param cart cart object
+     */
     @Override
     public void completeOrderCommand(Cart cart) throws FileNotFoundException {
         System.out.println("\n\tReceipt: ");
@@ -149,6 +151,11 @@ public class StandardStore implements BookStoreSpecification, Command {
             refundOrderCommand(cart);
         }
     }
+
+    /**
+     *
+     * @param cart cart object
+     */
     @Override
     public void refundOrderCommand(Cart cart) throws FileNotFoundException {
         System.out.println("Would you like to refund ALL the items (y/n)? ");
@@ -197,7 +204,6 @@ public class StandardStore implements BookStoreSpecification, Command {
             postStore();
         }
     }
-
     @Override
     public void compareTwoItemsCommand() {
         System.out.println("Select two items by ID to compare. ");
@@ -234,6 +240,10 @@ public class StandardStore implements BookStoreSpecification, Command {
         System.out.println();
     }
 
+    /**
+     *
+     * @param itemID given an ID remove an item
+     */
     @Override
     public void removeItemCommand(int itemID) {
         cart.removeItemFromCart(itemID);
@@ -255,6 +265,11 @@ public class StandardStore implements BookStoreSpecification, Command {
             default -> System.out.println("Not an option...");
         }
     }
+
+    /**
+     *
+     * @return whether the bank transaction was successful
+     */
     @Override
     public boolean renderBankFunctionality() {
         Vault newVault = new Vault();
@@ -395,17 +410,30 @@ public class StandardStore implements BookStoreSpecification, Command {
         proceedToPurchase = true;
     }
 
+    /**
+     *
+     * @param item given an item object
+     */
     @Override
     public void bagItem(Item item) {
         item.setItemStatus(true);
     }
+
+    /**
+     *
+     * @return if the store is unlocked
+     */
     public boolean unlockStore() {
         return admin.didPass();
     }
 
+    /**
+     *
+     * @param account after each purchase, add the order to the .csv ledger file
+     */
     public void addToLedger(Account account) {
         String receipt = "src/Store/ledger.csv";
-        BufferedWriter out = null;
+        BufferedWriter out;
         try {
             out = new BufferedWriter(new FileWriter((receipt),true));
         } catch (IOException e) {

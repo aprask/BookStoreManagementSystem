@@ -4,13 +4,13 @@ import Administrator.Manager;
 import Administrator.Registrar;
 import Administrator.Security.Admin;
 import Bank.Vault;
-import Factory.Crate;
+import Factory.Custom.CustomCrate;
 import Factory.Item;
 
 import java.io.*;
 import java.util.*;
 public class CustomStore implements BookStoreSpecification, Command {
-    private static final Crate crate = new Crate();
+    private static final CustomCrate crate = new CustomCrate();
     private final Admin admin = new Admin();
     private final Scanner scanner = new Scanner(System.in);
     private final ArrayList<Float> customerWallets = new ArrayList<>();
@@ -18,8 +18,12 @@ public class CustomStore implements BookStoreSpecification, Command {
     private static final Manager theManager = new Manager();
     private static final ArrayList<Integer> soldIDHistory = new ArrayList<>();
     private static boolean proceedToPurchase = false;
-    private static int itemType = 0;
     private Account account;
+
+    /**
+     *
+     * @throws FileNotFoundException if file not found
+     */
     public CustomStore() throws FileNotFoundException {
         if(unlockStore())
         {
@@ -27,6 +31,7 @@ public class CustomStore implements BookStoreSpecification, Command {
             while(true)
             {
                 System.out.println("What type of item would you like to create (1=CD,2=Book,3=DVD,-1=Exit)? ");
+                int itemType;
                 try {
                     itemType = scanner.nextInt();
                     crate.addToBuildHistory(itemType);
@@ -62,25 +67,11 @@ public class CustomStore implements BookStoreSpecification, Command {
         }
 
     }
-    public static int getItemType() {
-        return itemType;
-    }
-
-    public static void setItemType(int itemType) {
-        CustomStore.itemType = itemType;
-    }
 
     /**
-     * @param itemType receive an itemType (1=CD,2=Book,3=DVD)
-     * @param amount   receive the quantity (amount = quantity, in a while loop --> amount--)
+     *
+     * @return inventory total
      */
-    @Override
-    public void restockProduct(int itemType, int amount) {
-        while(amount > 0){
-            crate.addToBuildHistory(itemType);
-            amount--;
-        }
-    }
     @Override
     public double inventoryValue() {
         return crate.valueOfCrate();
@@ -89,6 +80,11 @@ public class CustomStore implements BookStoreSpecification, Command {
     public void getMenuCommand() {
         crate.openCrate();
     }
+
+    /**
+     *
+     * @throws FileNotFoundException if file not found
+     */
     @Override
     public void makePurchaseCommand() throws FileNotFoundException {
         int customerCount = theManager.getLineCount();
@@ -163,6 +159,11 @@ public class CustomStore implements BookStoreSpecification, Command {
         }
 
     }
+
+    /**
+     *
+     * @param cart cart object
+     */
     @Override
     public void completeOrderCommand(Cart cart) throws FileNotFoundException {
         System.out.println("\n\tReceipt: ");
@@ -179,13 +180,18 @@ public class CustomStore implements BookStoreSpecification, Command {
         {
             addToLedger(account);
             System.out.println("Your total is: $" + cart.cartTotal());
-            cart.clearCart();
+            postStore();
         }
         else if(completeOrRefund.equalsIgnoreCase("n"))
         {
             refundOrderCommand(cart);
         }
     }
+
+    /**
+     *
+     * @param cart cart object
+     */
     @Override
     public void refundOrderCommand(Cart cart) throws FileNotFoundException {
         System.out.println("Would you like to refund ALL the items (y/n)? ");
@@ -207,7 +213,7 @@ public class CustomStore implements BookStoreSpecification, Command {
             {
                 cart.orderHistory();
                 System.out.println("Which item by ID would you like to remove from your cart? (exit = -1) ");
-                int itemByID = 0;
+                int itemByID;
                 try{
                    itemByID = scanner.nextInt();
                 } catch(InputMismatchException e)
@@ -230,6 +236,7 @@ public class CustomStore implements BookStoreSpecification, Command {
                 }
                 removeItemCommand(itemByID);
             }
+            postStore();
         }
     }
     @Override
@@ -267,11 +274,20 @@ public class CustomStore implements BookStoreSpecification, Command {
         crate.compareItemsInCrate(item1ID,item2ID);
         System.out.println();
     }
+
+    /**
+     *
+     * @param itemID given an ID remove an item
+     */
     @Override
     public void removeItemCommand(int itemID) {
         cart.removeItemFromCart(itemID);
     }
 
+    /**
+     *
+     * @return true if transaction is successful
+     */
     @Override
     public boolean renderBankFunctionality() {
         Vault newVault = new Vault();
@@ -404,11 +420,19 @@ public class CustomStore implements BookStoreSpecification, Command {
         proceedToPurchase = true;
     }
 
+    /**
+     *
+     * @param item given an item object
+     */
     @Override
     public void bagItem(Item item) {
         item.setItemStatus(true);
     }
 
+    /**
+     *
+     * @param locationID given the state of the vault by the ID
+     */
     public void bankCommands(int locationID)
     {
         switch (locationID) {
@@ -436,18 +460,30 @@ public class CustomStore implements BookStoreSpecification, Command {
         System.out.println("Type \"-1\" to exit/finalize order");
 
     }
+
+    /**
+     *
+     * @return if the store is unlocked
+     */
     public boolean unlockStore() {
         return admin.didPass();
     }
 
-
+    /**
+     *
+     * @return get the customer's wallet
+     */
     public ArrayList<Float> getCustomerWallets() {
         return customerWallets;
     }
 
+    /**
+     *
+     * @param account after each purchase, add the order to the .csv ledger file
+     */
     public void addToLedger(Account account) {
         String receipt = "src/Store/ledger.csv";
-        BufferedWriter out = null;
+        BufferedWriter out;
         try {
             out = new BufferedWriter(new FileWriter((receipt),true));
         } catch (IOException e) {
@@ -469,6 +505,48 @@ public class CustomStore implements BookStoreSpecification, Command {
             out.close();
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+    public void postStore()
+    {
+        System.out.println("\nWould you like to restock the inventory for the next order? ");
+        System.out.println("\t\"1\" = Yes, \"2\" = No");
+        int restockOption = scanner.nextInt();
+        if(restockOption == 1)
+        {
+            while(true)
+            {
+                cart.displaySoldItems();
+                if(Cart.orderHistory.size() == 0)
+                {
+                    cart.clearCart();
+                    break;
+                }
+                System.out.println("Select an item by its name to restock (-1 = Exit)");
+                String selectByName = scanner.nextLine();
+                if(selectByName.equals("-1"))
+                {
+                    System.out.println("Bye");
+                    break;
+                }
+                else
+                {
+                    if(cart.restockItem(selectByName))
+                    {
+                        crate.retrieveSpecifiedItem(selectByName).setItemStatus(false);
+                        System.out.println("Restock Successful");
+                    }
+                    else
+                    {
+                        System.out.println("Name DNE");
+                    }
+                }
+            }
+            cart.clearCart();
+        }
+        else
+        {
+            cart.clearCart();
         }
     }
 }
