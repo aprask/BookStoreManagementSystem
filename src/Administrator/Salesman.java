@@ -126,19 +126,113 @@ public class Salesman implements Pitch {
         int membershipMonth = scanner.nextInt();
         final float premiumPayment = 7.55f;
         switch (membershipMonth) {
-            case 1 -> System.out.println("Your membership payment of $" + premiumPayment + " will be due in February");
-            case 2 -> System.out.println("Your membership payment of $" + premiumPayment + " will be due in March");
-            case 3 -> System.out.println("Your membership payment of $" + premiumPayment + " will be due in April");
-            case 4 -> System.out.println("Your membership payment of $" + premiumPayment + " will be due in May");
-            case 5 -> System.out.println("Your membership payment of $" + premiumPayment + " will be due in June");
-            case 6 -> System.out.println("Your membership payment of $" + premiumPayment + " will be due in July");
-            case 7 -> System.out.println("Your membership payment of $" + premiumPayment + " will be due in August");
-            case 8 -> System.out.println("Your membership payment of $" + premiumPayment + " will be due in September");
-            case 9 -> System.out.println("Your membership payment of $" + premiumPayment + " will be due in October");
-            case 10 -> System.out.println("Your membership payment of $" + premiumPayment + " will be due in November");
-            case 11 -> System.out.println("Your membership payment of $" + premiumPayment + " will be due in December");
-            case 12 -> System.out.println("Your membership payment of $" + premiumPayment + " will be due in January");
-            default -> System.out.println("Error");
+            case 1 ->
+            {
+                System.out.println("Your membership payment of $" + premiumPayment + " will be due in February");
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException o) {
+                    throw new RuntimeException(o);
+                }
+            }
+            case 2 ->
+            {
+                System.out.println("Your membership payment of $" + premiumPayment + " will be due in March");
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException o) {
+                    throw new RuntimeException(o);
+                }
+            }
+            case 3 ->
+            {
+                System.out.println("Your membership payment of $" + premiumPayment + " will be due in April");
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException o) {
+                    throw new RuntimeException(o);
+                }
+            }
+            case 4 -> {
+                System.out.println("Your membership payment of $" + premiumPayment + " will be due in May");
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException o) {
+                    throw new RuntimeException(o);
+                }
+            }
+            case 5 -> {
+                System.out.println("Your membership payment of $" + premiumPayment + " will be due in June");
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException o) {
+                    throw new RuntimeException(o);
+                }
+            }
+            case 6 -> {
+                System.out.println("Your membership payment of $" + premiumPayment + " will be due in July");
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException o) {
+                    throw new RuntimeException(o);
+                }
+            }
+            case 7 -> {
+                System.out.println("Your membership payment of $" + premiumPayment + " will be due in August");
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException o) {
+                    throw new RuntimeException(o);
+                }
+            }
+            case 8 -> {
+                System.out.println("Your membership payment of $" + premiumPayment + " will be due in September");
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException o) {
+                    throw new RuntimeException(o);
+                }
+            }
+            case 9 -> {
+                System.out.println("Your membership payment of $" + premiumPayment + " will be due in October");
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException o) {
+                    throw new RuntimeException(o);
+                }
+            }
+            case 10 -> {
+                System.out.println("Your membership payment of $" + premiumPayment + " will be due in November");
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException o) {
+                    throw new RuntimeException(o);
+                }
+            }
+            case 11 -> {
+                System.out.println("Your membership payment of $" + premiumPayment + " will be due in December");
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException o) {
+                    throw new RuntimeException(o);
+                }
+            }
+            case 12 -> {
+                System.out.println("Your membership payment of $" + premiumPayment + " will be due in January");
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException o) {
+                    throw new RuntimeException(o);
+                }
+            }
+            default -> {
+                System.out.println("Error");
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException o) {
+                    throw new RuntimeException(o);
+                }
+            }
         }
         System.out.println("\n");
     }

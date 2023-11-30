@@ -28,7 +28,17 @@ public class StandardStore implements BookStoreSpecification, Command {
         if(unlockStore())
         {
             System.out.println("Importing default array of items.");
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException o) {
+                throw new RuntimeException(o);
+            }
             System.out.println("Please wait...");
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException o) {
+                throw new RuntimeException(o);
+            }
             System.out.println("\nItems:");
             defaultCrate.openCrate();
             this.catalogCustomers();
@@ -70,26 +80,51 @@ public class StandardStore implements BookStoreSpecification, Command {
                     itemMenu();
                     String wallet = "Wallet: $" + getCustomerWallets().get(currentCustomerID);
                     System.out.println(wallet);
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException o) {
+                        throw new RuntimeException(o);
+                    }
                     int purchaseOption = scanner.nextInt();
                     if(purchaseOption == 1 || purchaseOption == 2 || purchaseOption == 3)
                     {
                         defaultCrate.openCrate(purchaseOption);
                         System.out.println(wallet);
                         System.out.println("Purchase the desired item by its associated ID: ");
+                        try {
+                            Thread.sleep(2000);
+                        } catch (InterruptedException o) {
+                            throw new RuntimeException(o);
+                        }
                         int desiredItem;
                         try{
                             desiredItem = scanner.nextInt();
                         } catch(InputMismatchException e)
                         {
                             System.out.println("You need to enter a number");
+                            try {
+                                Thread.sleep(2000);
+                            } catch (InterruptedException o) {
+                                throw new RuntimeException(o);
+                            }
                             break;
                         } catch(NoSuchElementException e)
                         {
                             System.out.println("This is not a valid type");
+                            try {
+                                Thread.sleep(2000);
+                            } catch (InterruptedException o) {
+                                throw new RuntimeException(o);
+                            }
                             break;
                         } catch(Exception e)
                         {
                             System.out.println("Error: " + e);
+                            try {
+                                Thread.sleep(2000);
+                            } catch (InterruptedException o) {
+                                throw new RuntimeException(o);
+                            }
                             break;
                         }
                         if(!(defaultCrate.retrieveSpecifiedItem(desiredItem).getItemPrice() > getCustomerWallets().get(currentCustomerID)))
@@ -103,15 +138,30 @@ public class StandardStore implements BookStoreSpecification, Command {
                         else
                         {
                             System.out.println("Insufficient Funds...");
+                            try {
+                                Thread.sleep(2000);
+                            } catch (InterruptedException o) {
+                                throw new RuntimeException(o);
+                            }
                         }
                     }
                     else if(purchaseOption == 4)
                     {
                         System.out.println("Cost of the inventory $" + inventoryValue());
+                        try {
+                            Thread.sleep(2000);
+                        } catch (InterruptedException o) {
+                            throw new RuntimeException(o);
+                        }
                     }
                     else if(purchaseOption == 5)
                     {
                         compareTwoItemsCommand();
+                        try {
+                            Thread.sleep(2000);
+                        } catch (InterruptedException o) {
+                            throw new RuntimeException(o);
+                        }
                     }
                     else if(purchaseOption == -1)
                     {
@@ -133,6 +183,11 @@ public class StandardStore implements BookStoreSpecification, Command {
     public void completeOrderCommand(Cart cart) throws FileNotFoundException {
         System.out.println("\n\tReceipt: ");
         cart.orderHistory();
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException o) {
+            throw new RuntimeException(o);
+        }
         System.out.println("Would you like to purchase the following items you added to your cart? (y/n)");
         String completeOrRefund = "";
         try{
@@ -140,6 +195,11 @@ public class StandardStore implements BookStoreSpecification, Command {
         } catch(Exception e)
         {
             System.out.println("Error");
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException o) {
+                throw new RuntimeException(o);
+            }
         }
         if(completeOrRefund.equalsIgnoreCase("y"))
         {
@@ -149,6 +209,11 @@ public class StandardStore implements BookStoreSpecification, Command {
                 throw new RuntimeException(e);
             }
             System.out.println("Your total is: $" + cart.cartTotal());
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException o) {
+                throw new RuntimeException(o);
+            }
             postStore();
         }
         else if(completeOrRefund.equalsIgnoreCase("n"))
@@ -170,10 +235,20 @@ public class StandardStore implements BookStoreSpecification, Command {
         } catch(Exception e)
         {
             System.out.println("Error: " + e);
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException o) {
+                throw new RuntimeException(o);
+            }
         }
         if(refundOption.equalsIgnoreCase("y"))
         {
             System.out.println("You will be refunded: $" + cart.cartTotal());
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException o) {
+                throw new RuntimeException(o);
+            }
             cart.clearCart();
         }
         else if(refundOption.equalsIgnoreCase("n"))
@@ -182,6 +257,11 @@ public class StandardStore implements BookStoreSpecification, Command {
             {
                 System.out.println("\n\tReceipt: ");
                 cart.orderHistory();
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException o) {
+                    throw new RuntimeException(o);
+                }
                 System.out.println("Which item by NAME would you like to remove from your cart? (exit = \"-1\") ");
                 int itemByID;
                 try{
@@ -189,19 +269,39 @@ public class StandardStore implements BookStoreSpecification, Command {
                 } catch(InputMismatchException e)
                 {
                     System.out.println("You need to enter a number");
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException o) {
+                        throw new RuntimeException(o);
+                    }
                     break;
                 } catch(NoSuchElementException e)
                 {
                     System.out.println("This is not a valid type");
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException o) {
+                        throw new RuntimeException(o);
+                    }
                     break;
                 } catch(Exception e)
                 {
                     System.out.println("Error: " + e);
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException o) {
+                        throw new RuntimeException(o);
+                    }
                     break;
                 }
                 if(itemByID == -1 || cart.getOrderHistory().size() == 0)
                 {
                     completeOrderCommand(cart);
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException o) {
+                        throw new RuntimeException(o);
+                    }
                     break;
                 }
                 removeItemCommand(itemByID);
@@ -212,6 +312,11 @@ public class StandardStore implements BookStoreSpecification, Command {
     @Override
     public void compareTwoItemsCommand() {
         System.out.println("Select two items by ID to compare. ");
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException o) {
+            throw new RuntimeException(o);
+        }
         System.out.println("Enter the first ID: ");
         int item1ID = 0;
         try{
@@ -219,12 +324,27 @@ public class StandardStore implements BookStoreSpecification, Command {
         } catch(InputMismatchException e)
         {
             System.out.println("You need to enter a number");
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException o) {
+                throw new RuntimeException(o);
+            }
         } catch(NoSuchElementException e)
         {
             System.out.println("This is not a valid type");
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException o) {
+                throw new RuntimeException(o);
+            }
         } catch(Exception e)
         {
             System.out.println("Error: " + e);
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException o) {
+                throw new RuntimeException(o);
+            }
         }
         System.out.println("Enter the second ID: ");
         int item2ID = 0;
@@ -233,15 +353,35 @@ public class StandardStore implements BookStoreSpecification, Command {
         } catch(InputMismatchException e)
         {
             System.out.println("You need to enter a number");
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException o) {
+                throw new RuntimeException(o);
+            }
         } catch(NoSuchElementException e)
         {
             System.out.println("This is not a valid type");
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException o) {
+                throw new RuntimeException(o);
+            }
         } catch(Exception e)
         {
             System.out.println("Error: " + e);
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException o) {
+                throw new RuntimeException(o);
+            }
         }
         System.out.println();
         defaultCrate.compareItemsInCrate(item1ID,item2ID);
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException o) {
+            throw new RuntimeException(o);
+        }
         System.out.println();
     }
 
@@ -279,9 +419,18 @@ public class StandardStore implements BookStoreSpecification, Command {
     public boolean renderBankFunctionality() {
         Vault newVault = new Vault();
         System.out.println("You need to withdraw money from our ATM before you make any purchases... ");
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException o) {
+            throw new RuntimeException(o);
+        }
         System.out.println("You will need to enter your 4-digit pin number...");
         System.out.println("Awaiting Service...\n");
-        System.out.println("WELCOME\n");
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException o) {
+            throw new RuntimeException(o);
+        }
         bankCommands(1);
         int bankProcedure = 0;
         boolean proceedWithBank = false;
@@ -294,6 +443,11 @@ public class StandardStore implements BookStoreSpecification, Command {
             }
             catch (InputMismatchException e) {
                 System.out.println("Error");
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException o) {
+                    throw new RuntimeException(o);
+                }
                 System.out.println("You need to enter a number before you proceed.");
             }
         }
@@ -302,6 +456,11 @@ public class StandardStore implements BookStoreSpecification, Command {
             if(bankProcedure != 1)
             {
                 System.out.println("YOU NEED TO INSERT A CARD BEFORE YOU DO ANYTHING ELSE!");
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException o) {
+                    throw new RuntimeException(o);
+                }
                 bankCommands(1);
                 proceedWithBank = false;
                 while(!proceedWithBank)
@@ -313,6 +472,11 @@ public class StandardStore implements BookStoreSpecification, Command {
                     } catch(InputMismatchException e)
                     {
                         System.out.println("Enter a number");
+                        try {
+                            Thread.sleep(2000);
+                        } catch (InterruptedException o) {
+                            throw new RuntimeException(o);
+                        }
                     }
                 }
             }
@@ -331,6 +495,11 @@ public class StandardStore implements BookStoreSpecification, Command {
                         }
                         catch (InputMismatchException e) {
                             System.out.println("Error");
+                            try {
+                                Thread.sleep(2000);
+                            } catch (InterruptedException o) {
+                                throw new RuntimeException(o);
+                            }
                             System.out.println("You need to enter a number before you proceed.");
                         }
                     }
@@ -348,12 +517,22 @@ public class StandardStore implements BookStoreSpecification, Command {
                             }
                             catch (InputMismatchException e) {
                                 System.out.println("Error");
+                                try {
+                                    Thread.sleep(2000);
+                                } catch (InterruptedException o) {
+                                    throw new RuntimeException(o);
+                                }
                                 System.out.println("You need to enter a number before you proceed.");
                             }
                         }
                         if(attemptedPin.length() != 4)
                         {
                             System.out.println("ERROR ");
+                            try {
+                                Thread.sleep(2000);
+                            } catch (InterruptedException o) {
+                                throw new RuntimeException(o);
+                            }
                             newVault.hasCard().insertPin(attemptedPin);
                             break;
                         }
@@ -368,6 +547,11 @@ public class StandardStore implements BookStoreSpecification, Command {
                             }
                             catch (InputMismatchException e) {
                                 System.out.println("Error");
+                                try {
+                                    Thread.sleep(2000);
+                                } catch (InterruptedException o) {
+                                    throw new RuntimeException(o);
+                                }
                                 System.out.println("Enter a number.");
                             }
                             if(withdrawnMoney <= newVault.getCashStoredInVault())
@@ -375,11 +559,21 @@ public class StandardStore implements BookStoreSpecification, Command {
                                 customerWallets.add((float) withdrawnMoney);
                                 newVault.hasCorrectPin().withdraw(withdrawnMoney);
                                 System.out.println("$" + withdrawnMoney + " added to your wallet.\n");
+                                try {
+                                    Thread.sleep(2000);
+                                } catch (InterruptedException o) {
+                                    throw new RuntimeException(o);
+                                }
                                 return true;
                             }
                             else
                             {
                                 System.out.println("Error");
+                                try {
+                                    Thread.sleep(2000);
+                                } catch (InterruptedException o) {
+                                    throw new RuntimeException(o);
+                                }
                                 newVault.hasCorrectPin().withdraw(withdrawnMoney);
                             }
 
@@ -393,6 +587,11 @@ public class StandardStore implements BookStoreSpecification, Command {
                     if(bankProcedure == 4)
                     {
                         System.out.println("Cash in Vault: " + newVault.getCashStoredInVault());
+                        try {
+                            Thread.sleep(2000);
+                        } catch (InterruptedException o) {
+                            throw new RuntimeException(o);
+                        }
                     }
                 } while (true);
 
@@ -475,6 +674,11 @@ public class StandardStore implements BookStoreSpecification, Command {
     public void postStore()
     {
         System.out.println("\nWould you like to restock the inventory for the next order? ");
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException o) {
+            throw new RuntimeException(o);
+        }
         System.out.println("\t\"1\" = Yes, \"2\" = No");
         int restockOption = 0;
         try{
@@ -482,11 +686,21 @@ public class StandardStore implements BookStoreSpecification, Command {
         } catch(Exception e)
         {
             System.out.println("Error: " + e);
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException o) {
+                throw new RuntimeException(o);
+            }
         }
         scanner.nextLine();
         if(restockOption == 1)
         {
             cart.displaySoldItems();
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException o) {
+                throw new RuntimeException(o);
+            }
             while(true)
             {
                 if(Cart.orderHistory.size() == 0)
@@ -495,6 +709,11 @@ public class StandardStore implements BookStoreSpecification, Command {
                     break;
                 }
                 System.out.println("Select an item by its << NAME >> to restock (\"exit\" = Exit)");
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException o) {
+                    throw new RuntimeException(o);
+                }
                 String selectByName = scanner.nextLine();
                 try{
                     checkProductName(selectByName);
@@ -503,10 +722,20 @@ public class StandardStore implements BookStoreSpecification, Command {
                 } catch (Exception e)
                 {
                     System.out.println("Error: " + e);
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException o) {
+                        throw new RuntimeException(o);
+                    }
                 }
                 if(selectByName.equalsIgnoreCase("exit"))
                 {
                     System.out.println("Bye");
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException o) {
+                        throw new RuntimeException(o);
+                    }
                     break;
                 }
                 else
@@ -515,10 +744,20 @@ public class StandardStore implements BookStoreSpecification, Command {
                     {
                         defaultCrate.retrieveSpecifiedItem(selectByName).setItemStatus(false);
                         System.out.println("Restock Successful");
+                        try {
+                            Thread.sleep(2000);
+                        } catch (InterruptedException o) {
+                            throw new RuntimeException(o);
+                        }
                     }
                     else
                     {
                         System.out.println("Name DNE");
+                        try {
+                            Thread.sleep(2000);
+                        } catch (InterruptedException o) {
+                            throw new RuntimeException(o);
+                        }
                     }
                 }
             }

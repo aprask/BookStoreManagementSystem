@@ -14,12 +14,22 @@ public class NoCash implements BankState {
     @Override
     public void insertCard() {
         System.out.println("No Money");
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException o) {
+            throw new RuntimeException(o);
+        }
         System.out.println("Card Ejected.");
     }
 
     @Override
     public void ejectCard() {
         System.out.println("No Card");
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException o) {
+            throw new RuntimeException(o);
+        }
     }
 
     /**
@@ -29,6 +39,11 @@ public class NoCash implements BankState {
     @Override
     public void insertPin(String pin) {
         System.out.println("No Money");
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException o) {
+            throw new RuntimeException(o);
+        }
     }
 
     /**
@@ -38,5 +53,10 @@ public class NoCash implements BankState {
     @Override
     public void withdraw(int withdrawAmount) {
         System.out.println("No Money");
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException o) {
+            throw new RuntimeException(o);
+        }
     }
 }

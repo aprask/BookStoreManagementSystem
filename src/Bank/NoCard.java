@@ -13,11 +13,21 @@ public class NoCard implements BankState {
     @Override
     public void insertCard() {
         System.out.println("Insertion was successful.");
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException o) {
+            throw new RuntimeException(o);
+        }
         vault.changeVaultState(vault.hasCard());
     }
     @Override
     public void ejectCard() {
         System.out.println("You need to insert a card before you eject it.");
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException o) {
+            throw new RuntimeException(o);
+        }
         System.out.println("Card Ejected.");
     }
 
@@ -28,6 +38,11 @@ public class NoCard implements BankState {
     @Override
     public void insertPin(String pin) {
         System.out.println("You need to insert a card before you eject it.");
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException o) {
+            throw new RuntimeException(o);
+        }
         System.out.println("Card Ejected.");
     }
 
@@ -38,6 +53,11 @@ public class NoCard implements BankState {
     @Override
     public void withdraw(int withdrawAmount) {
         System.out.println("You need to insert a card before you eject it.");
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException o) {
+            throw new RuntimeException(o);
+        }
         System.out.println("Card Ejected.");
     }
 }
